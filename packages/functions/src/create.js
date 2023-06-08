@@ -1,7 +1,7 @@
 import { Table } from "sst/node/table";
 import * as uuid from "uuid";
-import handler from "@tipline/core/handler";
-import dynamoDb from "@tipline/core/dynamodb";
+import handler from "@TipLine/core/handler";
+import dynamoDb from "@TipLine/core/dynamodb";
 
 export const main = handler(async (event) => {
   const data = JSON.parse(event.body);
