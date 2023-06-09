@@ -48,9 +48,10 @@ export default function Home() {
   function renderNotesList(notes) {
 
     const upVote = (id, count) => {
-      console.log(id, count)
+      const num = Number(count);
+      console.log(id, num)
       API.put("tipline", `/vote/${id}`, {
-        body: count
+        body: num
       });
     };
     return (
@@ -67,7 +68,8 @@ export default function Home() {
           <IconButton onClick={() => upVote(postId, voteCount+1)}>
             <BsEmojiSmile />
           </IconButton>
-          <IconButton>
+          {voteCount}
+          <IconButton onClick={() => upVote(postId, voteCount-1)}>
             <BsEmojiFrown />
           </IconButton>
           </span>

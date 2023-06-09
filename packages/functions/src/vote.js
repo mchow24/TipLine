@@ -3,8 +3,12 @@ import handler from "@TipLine/core/handler";
 import dynamoDb from "@TipLine/core/dynamodb";
 
 export const main = handler(async (event) => {
-console.log("hjaGSSGHJDGASJHDGDJAG");
-  const data = JSON.parse(event.body);
+    var data = 0
+  try {
+    data = JSON.parse(event.body);
+  } catch{
+    data = 0;
+  }
   const params = {
     TableName: Table.Posts.tableName,
     // 'Key' defines the partition key and sort key of the item to be updated
@@ -16,7 +20,7 @@ console.log("hjaGSSGHJDGASJHDGDJAG");
     // 'ExpressionAttributeValues' defines the value in the update expression
     UpdateExpression: "SET voteCount = :voteCount",
     ExpressionAttributeValues: {
-      ":voteCount": data.voteCount || null
+      ":voteCount": data || 0
     },
     // 'ReturnValues' specifies if and how to return the item's attributes,
     // where ALL_NEW returns all attributes of the item after the update; you
