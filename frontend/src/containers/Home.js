@@ -24,6 +24,8 @@ export default function Home() {
   const [vote, setVote] = useState(true);
   const [authUserId, setUserId] = useState(null);
   const [del, setDel] = useState(true);
+  const [isSmileActive, setIsSmileActive] = useState(false);
+  const [isFrownActive, setIsFrownActive] = useState(false);
 
   useEffect(() => {
     async function onLoad() {
@@ -43,10 +45,10 @@ export default function Home() {
     }
     onLoad();
   }, [isAuthenticated, vote, del]);
-  
+
   async function loadPosts() {
     var list = await API.get("tipline", "/posts");
-    
+
     for (let i = 0; i < list.length; i++) {
       const image = list[i].attachment;
       if (!image) continue;
@@ -55,7 +57,7 @@ export default function Home() {
     }
     return list;
   }
-  
+
   function renderPostsList(posts) {
     const upVote = (id, count) => {
       console.log("I got called");
@@ -65,8 +67,16 @@ export default function Home() {
       API.put("tipline", `/vote/${id}`, {
         body: num
       });
-      
+
     };
+
+    const handleUp = () => {
+      setIsSmileActive(current => !current);
+    }
+
+    const handleDown = () => {
+      setIsFrownActive(current => !current);
+    }
 
     const authUserGet = (id) => {
       return authUserId == id;
@@ -77,39 +87,53 @@ export default function Home() {
       setDel(!del);
     };
     return (
-  <Box sx={{ width: '80%', bgcolor: 'background.paper' }}>
-  {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
-  <Card sx={{ width: '700px', marginBottom: '10px'}}>
-    <div className="listItem">
-      <div>
-        <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {content}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {new Date(createdAt).toLocaleString()}
-            </Typography>
-        </CardContent>
-        <CardActions>
-            <span>
-            <IconButton onClick={() => upVote(postId, voteCount+1)}>
-              <BsEmojiSmile />
-            </IconButton>
-            {voteCount}
-            <IconButton onClick={() => upVote(postId, voteCount-1)}>
-              <BsEmojiFrown />
-            </IconButton>
-            {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
-              <BsTrashFill />
-            </IconButton> : null}
-            </span>
-        </CardActions>
-      </div>
-      {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
-    </div>
-  </Card>
-  ))}
-    </Box>
+      <Box sx={{ width: '80%', bgcolor: 'background.paper' }}>
+        {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
+          <Card sx={{ width: '700px', marginBottom: '10px' }}>
+            <div className="listItem">
+              <div>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {content}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Date(createdAt).toLocaleString()}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <span>
+                    <IconButton style={{
+                      color: isSmileActive ? 'green' : '',
+                    }}
+                      onClick={() => {
+                        upVote(postId, voteCount + 1);
+                        handleUp();
+                      }}>
+                      <BsEmojiSmile />
+                    </IconButton>
+                    {voteCount}
+                    <IconButton style={{
+                      color: isFrownActive ? 'red' : '',
+                    }}
+                      onClick={() => {
+                        upVote(postId, voteCount - 1);
+                        handleDown();
+
+                      }}>
+                      <BsEmojiFrown />
+                    </IconButton>
+                    {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
+                      <BsTrashFill />
+                    </IconButton> : null}
+                  </span>
+                </CardActions>
+              </div>
+              {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
+            </div>
+          </Card>
+        ))
+        }
+      </Box >
     );
   }
 
@@ -125,13 +149,15 @@ export default function Home() {
   function renderPosts() {
     return (
       <div className="posts">
-        <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Posts</h2>
+        <h2 className="pb-3 mt-4 mb-3 border-bottom">
+          Your Posts
+        </h2>
         <ListGroup>{!isLoading && renderPostsList(posts)}</ListGroup>
       </div>
     );
   }
 
-  
+
 
   const fabStyle = {
     position: 'absolute',
@@ -149,8 +175,8 @@ export default function Home() {
     <div className="Home">
       {isAuthenticated ? renderPosts() : renderLander()}
       <Fab sx={fabStyle} size="large" onClick={() => newPost()}>
-          {<GrAdd size="30"/>}
-        </Fab>
+        {<GrAdd size="30" />}
+      </Fab>
     </div>
   );
 }

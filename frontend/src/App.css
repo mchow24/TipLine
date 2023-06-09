@@ -1,2 +1,39 @@
 .App {
+  /* background-image: url("https://wallpaperaccess.com/full/1089679.png");
+  height: 100%;
+
+  Center and scale the image nicely
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; */
+}
+
+#light {
+    background-color: #f3ebf6;
+}
+
+
+#dark {
+    background-color: #46045e;
+}
+
+
+.switch {
+    display: flex;
+    width: 100vw;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+}
+
+.switch label {
+    margin: 10px;
+}
+
+#light .switch label {
+    color: black;
+}
+
+#dark .switch label {
+    color: white;
 }
