@@ -4,7 +4,7 @@ import { useAppContext } from "../lib/contextLib";
 import { onError } from "../lib/errorLib";
 import { API } from "aws-amplify";
 import Box from '@mui/material/Box';
-import { BsEmojiFrown, BsEmojiSmile } from "react-icons/bs";
+import { BsEmojiFrown, BsEmojiSmile, BsTrashFill } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
@@ -12,9 +12,9 @@ import { Fab, IconButton } from "@mui/material";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { s3Get } from "../lib/awsLib";
+import { Auth } from "aws-amplify";
 
 export default function Home() {
   const nav = useNavigate();
@@ -22,6 +22,7 @@ export default function Home() {
   const { isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
   const [vote, setVote] = useState(true);
+  const [authUserId, setUserId] = useState(null);
 
   useEffect(() => {
     async function onLoad() {
@@ -29,6 +30,8 @@ export default function Home() {
         return;
       }
       try {
+        const auth = await Auth.currentUserInfo();
+        setUserId(auth.id);
         const posts = await loadPosts();
         console.log("after loading notes");
         setPosts(posts);
@@ -65,9 +68,16 @@ export default function Home() {
       //setVote(!vote);
     };
 
+    const authUserGet = (id) => {
+      return authUserId == id;
+    };
+
+    const deletePost = (id) => {
+      API.del("tipline", `/posts/${id}`);
+    };
     return (
   <Box sx={{ width: '80%', bgcolor: 'background.paper' }}>
-  {posts.map(({ postId, content, createdAt, voteCount, attachment }) => (
+  {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
   <Card sx={{ width: '700px', marginBottom: '10px'}}>
     <div className="listItem">
       <div>
@@ -88,6 +98,9 @@ export default function Home() {
             <IconButton onClick={() => upVote(postId, voteCount-1)}>
               <BsEmojiFrown />
             </IconButton>
+            {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
+              <BsTrashFill />
+            </IconButton> : null}
             </span>
         </CardActions>
       </div>

@@ -15,7 +15,8 @@ export function ApiStack({ stack, app }) {
         routes: {
             "POST /tipline": "packages/functions/src/create.main",
             "GET /posts": "packages/functions/src/getAllPosts.main",
-            "PUT /vote/{id}": "packages/functions/src/vote.main"
+            "PUT /vote/{id}": "packages/functions/src/vote.main",
+            "DELETE /posts/{id}": "packages/functions/src/delete.main"
         },
     });
 
