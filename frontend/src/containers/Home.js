@@ -19,6 +19,7 @@ export default function Home() {
   const [notes, setNotes] = useState([]);
   const { isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
+  const [vote, setVote] = useState(true);
 
   useEffect(() => {
     async function onLoad() {
@@ -28,6 +29,7 @@ export default function Home() {
   
       try {
         const notes = await loadNotes();
+        console.log("after loading notes");
         setNotes(notes);
       } catch (e) {
         onError(e);
@@ -37,23 +39,25 @@ export default function Home() {
     }
   
     onLoad();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, vote]);
   
   function loadNotes() {
     return API.get("tipline", "/posts");
   }
 
-  
 
-  function renderNotesList(notes) {
-
+  function RenderNotesList(notes) {
     const upVote = (id, count) => {
+      
       const num = Number(count);
       console.log(id, num)
+      //setVote(count);
       API.put("tipline", `/vote/${id}`, {
         body: num
       });
+      setVote(!vote);
     };
+
     return (
     <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
     <List dense={false}>
@@ -65,11 +69,13 @@ export default function Home() {
         />
         <div>
           <span>
-          <IconButton onClick={() => upVote(postId, voteCount+1)}>
+          <IconButton onClick={() => {
+            upVote(postId, voteCount+1)}}>
             <BsEmojiSmile />
           </IconButton>
           {voteCount}
-          <IconButton onClick={() => upVote(postId, voteCount-1)}>
+          <IconButton onClick={() => {
+            upVote(postId, voteCount-1);}}>
             <BsEmojiFrown />
           </IconButton>
           </span>
@@ -118,7 +124,7 @@ export default function Home() {
     return (
       <div className="notes">
         <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Notes</h2>
-        <ListGroup>{!isLoading && renderNotesList(notes)}</ListGroup>
+        <ListGroup>{!isLoading && RenderNotesList(notes)}</ListGroup>
       </div>
     );
   }
