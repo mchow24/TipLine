@@ -15,6 +15,22 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { s3Get } from "../lib/awsLib";
 import { Auth } from "aws-amplify";
+import Button from '@mui/joy/Button';
+import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
+import Textarea from '@mui/joy/Textarea';
+import IconButtonTwo from '@mui/joy/IconButton';
+import Menu from '@mui/joy/Menu';
+import MenuItem from '@mui/joy/MenuItem';
+import ListItemDecorator from '@mui/joy/ListItemDecorator';
+import FormatBold from '@mui/icons-material/FormatBold';
+import FormatItalic from '@mui/icons-material/FormatItalic';
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import Check from '@mui/icons-material/Check';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function Home() {
   const nav = useNavigate();
@@ -105,6 +121,41 @@ export default function Home() {
       </div>
       {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
     </div>
+    <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography> expand to comment </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+        <FormControl>
+        <FormLabel></FormLabel>
+        <Textarea
+          placeholder="Comment something here…"
+          minRows={3}
+          endDecorator={
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 'var(--Textarea-paddingBlock)',
+                pt: 'var(--Textarea-paddingBlock)',
+                borderTop: '1px solid',
+                borderColor: 'divider',
+                flex: 'auto',
+              }}
+            >
+              <Button sx={{ ml: 'auto' }}>Comment</Button>
+            </Box>
+          }
+          sx={{
+            minWidth: 300,
+          }}
+        />
+      </FormControl>
+        </AccordionDetails>
+      </Accordion>
   </Card>
   ))}
     </Box>
