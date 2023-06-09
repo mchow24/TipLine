@@ -7,7 +7,7 @@ export function ApiStack({ stack, app }) {
     // Create the API
     const api = new Api(stack, "Api", {
         customDomain:
-            app.stage === "prod" ? "api.d17us03hyskcy.cloudfront.net" : undefined,
+            app.stage === "prod" ? "pbslupp5ld.execute-api.us-east-1.amazonaws.com" : undefined,
         defaults: {
             authorizer: "iam",
             function: {
