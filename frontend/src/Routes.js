@@ -47,7 +47,7 @@ export default function Links() {
             }
         />
         <Route
-            path="/notes/new"
+            path="/posts/new"
             element={
                 <AuthenticatedRoute>
                 <NewNote />

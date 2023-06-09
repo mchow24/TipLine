@@ -6,17 +6,17 @@ import { API } from "aws-amplify";
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import { BsPencilSquare, BsEmojiFrown, BsEmojiSmile } from "react-icons/bs";
-import { LinkContainer } from "react-router-bootstrap";
+import { BsEmojiFrown, BsEmojiSmile } from "react-icons/bs";
+import { GrAdd } from "react-icons/gr";
+import { useNavigate } from "react-router-dom";
 import "./Home.css";
-import { IconButton } from "@mui/material";
+import { Fab, IconButton } from "@mui/material";
 
 export default function Home() {
-  const [notes, setNotes] = useState([]);
+  const nav = useNavigate();
+  const [notes, setPosts] = useState([]);
   const { isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,8 +27,8 @@ export default function Home() {
       }
   
       try {
-        const notes = await loadNotes();
-        setNotes(notes);
+        const notes = await loadPosts();
+        setPosts(notes);
       } catch (e) {
         onError(e);
       }
@@ -39,13 +39,13 @@ export default function Home() {
     onLoad();
   }, [isAuthenticated]);
   
-  function loadNotes() {
+  function loadPosts() {
     return API.get("tipline", "/posts");
   }
 
   
 
-  function renderNotesList(notes) {
+  function renderPostsList(notes) {
 
     const upVote = (id, count) => {
       const num = Number(count);
@@ -58,7 +58,7 @@ export default function Home() {
     <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
     <List dense={false}>
     {notes.map(({ postId, content, createdAt, voteCount }) => (
-      <ListItem>
+      <ListItem className="border-bottom">
         <ListItemText
           primary={content}
           secondary={new Date(createdAt).toLocaleString()}
@@ -74,6 +74,7 @@ export default function Home() {
           </IconButton>
           </span>
         </div>
+        <Divider />
       </ListItem>
     ))}
     </List>
@@ -109,23 +110,39 @@ export default function Home() {
     return (
       <div className="lander">
         <h1>Scratch</h1>
-        <p className="text-muted">A simple note taking app</p>
+        <p className="text-muted">An app to share messages anaonymously to people around you</p>
       </div>
     );
   }
 
-  function renderNotes() {
+  function renderPosts() {
     return (
       <div className="notes">
-        <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Notes</h2>
-        <ListGroup>{!isLoading && renderNotesList(notes)}</ListGroup>
+        <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Posts</h2>
+        <ListGroup>{!isLoading && renderPostsList(notes)}</ListGroup>
+        
       </div>
     );
   }
+
+  const fabStyle = {
+    position: 'absolute',
+    bottom: '10%',
+    right: '10%',
+    width: '100px',
+    height: '100px'
+  };
+
+  const newPost = () => {
+    nav("/posts/new");
+  };
 
   return (
     <div className="Home">
-      {isAuthenticated ? renderNotes() : renderLander()}
+      {isAuthenticated ? renderPosts() : renderLander()}
+      <Fab sx={fabStyle} size="large" onClick={() => newPost()}>
+          {<GrAdd size="30"/>}
+        </Fab>
     </div>
   );
 }
