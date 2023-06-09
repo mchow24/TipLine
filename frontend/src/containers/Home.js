@@ -4,19 +4,21 @@ import { useAppContext } from "../lib/contextLib";
 import { onError } from "../lib/errorLib";
 import { API } from "aws-amplify";
 import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
 import { BsEmojiFrown, BsEmojiSmile } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import { Fab, IconButton } from "@mui/material";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { s3Get } from "../lib/awsLib";
 
 export default function Home() {
   const nav = useNavigate();
-  const [notes, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
   const { isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,8 +29,8 @@ export default function Home() {
       }
   
       try {
-        const notes = await loadPosts();
-        setPosts(notes);
+        const posts = await loadPosts();
+        setPosts(posts);
       } catch (e) {
         onError(e);
       }
@@ -39,13 +41,25 @@ export default function Home() {
     onLoad();
   }, [isAuthenticated]);
   
-  function loadPosts() {
-    return API.get("tipline", "/posts");
+  async function loadPosts() {
+    var list = await API.get("tipline", "/posts");
+    
+    for (let i = 0; i < list.length; i++) {
+      const image = list[i].attachment;
+      
+      if (!image) continue;
+
+      const file = await s3Get(image);
+
+      list[i].attachment = file;
+    }
+
+    return list;
   }
 
   
 
-  function renderPostsList(notes) {
+  function renderPostsList(posts) {
 
     const upVote = (id, count) => {
       const num = Number(count);
@@ -55,55 +69,37 @@ export default function Home() {
       });
     };
     return (
-    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-    <List dense={false}>
-    {notes.map(({ postId, content, createdAt, voteCount }) => (
-      <ListItem className="border-bottom">
-        <ListItemText
-          primary={content}
-          secondary={new Date(createdAt).toLocaleString()}
-        />
-        <div>
-          <span>
-          <IconButton onClick={() => upVote(postId, voteCount+1)}>
-            <BsEmojiSmile />
-          </IconButton>
-          {voteCount}
-          <IconButton onClick={() => upVote(postId, voteCount-1)}>
-            <BsEmojiFrown />
-          </IconButton>
-          </span>
-        </div>
-        <Divider />
-      </ListItem>
-    ))}
-    </List>
-  </Box>
+  <Box sx={{ width: '80%', bgcolor: 'background.paper' }}>
+  {posts.map(({ postId, content, createdAt, voteCount, attachment }) => (
+  <Card sx={{ width: '700px', marginBottom: '10px'}}>
+    <div className="listItem">
+      <div>
+        <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {content}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {new Date(createdAt).toLocaleString()}
+            </Typography>
+        </CardContent>
+        <CardActions>
+            <span>
+            <IconButton onClick={() => upVote(postId, voteCount+1)}>
+              <BsEmojiSmile />
+            </IconButton>
+            {voteCount}
+            <IconButton onClick={() => upVote(postId, voteCount-1)}>
+              <BsEmojiFrown />
+            </IconButton>
+            </span>
+        </CardActions>
+      </div>
+      {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
+    </div>
+  </Card>
+  ))}
+    </Box>
     );
-    // return (
-    //   <>
-    //     <LinkContainer to="/notes/new">
-    //       <ListGroup.Item action className="py-3 text-nowrap text-truncate">
-    //         <BsPencilSquare size={17} />
-    //         <span className="ms-2 fw-bold">Create a new note</span>
-    //       </ListGroup.Item>
-    //     </LinkContainer>
-    //     {notes.map(({ noteId, content, createdAt }) => (
-    //       <LinkContainer key={noteId} to={`/notes/${noteId}`}>
-    //         <ListGroup.Item action className="text-nowrap text-truncate">
-    //           <span className="fw-bold">{content.trim().split("\n")[0]}</span>
-    //           <br />
-    //           <span className="text-muted">
-    //             Created: {new Date(createdAt).toLocaleString()}
-    //           </span>
-    //           <br />
-    //           <BsEmojiSmile size={17} className="mx-2"/>
-    //           <BsEmojiFrown size={17} />
-    //         </ListGroup.Item>
-    //       </LinkContainer>
-    //     ))}
-    //   </>
-    // );
   }
 
   function renderLander() {
@@ -117,9 +113,9 @@ export default function Home() {
 
   function renderPosts() {
     return (
-      <div className="notes">
+      <div className="posts">
         <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Posts</h2>
-        <ListGroup>{!isLoading && renderPostsList(notes)}</ListGroup>
+        <ListGroup>{!isLoading && renderPostsList(posts)}</ListGroup>
         
       </div>
     );
