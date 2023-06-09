@@ -33,7 +33,7 @@ export default function Home() {
         const auth = await Auth.currentUserInfo();
         setUserId(auth.id);
         const posts = await loadPosts();
-        console.log("after loading notes");
+        console.log("after loading posts");
         setPosts(posts);
       } catch (e) {
         onError(e);
@@ -41,7 +41,7 @@ export default function Home() {
       setIsLoading(false);
     }
     onLoad();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, vote]);
   
   async function loadPosts() {
     var list = await API.get("tipline", "/posts");
@@ -54,18 +54,17 @@ export default function Home() {
     }
     return list;
   }
-
   
-
   function renderPostsList(posts) {
     const upVote = (id, count) => {
+      console.log("I got called");
+      setVote(!vote);
       const num = Number(count);
       console.log(id, num)
-      //setVote(count);
       API.put("tipline", `/vote/${id}`, {
         body: num
       });
-      //setVote(!vote);
+      
     };
 
     const authUserGet = (id) => {
@@ -130,6 +129,8 @@ export default function Home() {
       </div>
     );
   }
+
+  
 
   const fabStyle = {
     position: 'absolute',

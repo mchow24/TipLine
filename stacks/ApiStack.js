@@ -16,7 +16,7 @@ export function ApiStack({ stack, app }) {
             "POST /tipline": "packages/functions/src/create.main",
             "GET /posts": "packages/functions/src/getAllPosts.main",
             "PUT /vote/{id}": "packages/functions/src/vote.main",
-            "DELETE /posts/{id}": "packages/functions/src/delete.main"
+            "DELETE /posts/{id}": "packages/functions/src/delete.main",
         },
     });
 
