@@ -23,6 +23,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [vote, setVote] = useState(true);
   const [authUserId, setUserId] = useState(null);
+  const [del, setDel] = useState(true);
 
   useEffect(() => {
     async function onLoad() {
@@ -41,7 +42,7 @@ export default function Home() {
       setIsLoading(false);
     }
     onLoad();
-  }, [isAuthenticated, vote]);
+  }, [isAuthenticated, vote, del]);
   
   async function loadPosts() {
     var list = await API.get("tipline", "/posts");
@@ -73,6 +74,7 @@ export default function Home() {
 
     const deletePost = (id) => {
       API.del("tipline", `/posts/${id}`);
+      setDel(!del);
     };
     return (
   <Box sx={{ width: '80%', bgcolor: 'background.paper' }}>
@@ -125,7 +127,6 @@ export default function Home() {
       <div className="posts">
         <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Posts</h2>
         <ListGroup>{!isLoading && renderPostsList(posts)}</ListGroup>
-        
       </div>
     );
   }

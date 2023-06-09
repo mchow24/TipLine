@@ -40,7 +40,7 @@ export default function NewNote() {
       const attachment = file.current ? await s3Upload(file.current) : null;
   
       await createNote({ content, attachment });
-      // nav("/");
+      nav("/");
     } catch (e) { 
       onError(e);
       setIsLoading(false);
