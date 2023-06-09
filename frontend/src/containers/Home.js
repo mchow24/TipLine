@@ -28,50 +28,41 @@ export default function Home() {
       if (!isAuthenticated) {
         return;
       }
-  
       try {
-        const notes = await loadNotes();
+        const posts = await loadPosts();
         console.log("after loading notes");
-        setNotes(notes);
+        setPosts(posts);
       } catch (e) {
         onError(e);
       }
-  
       setIsLoading(false);
     }
-  
     onLoad();
-  }, [isAuthenticated, vote]);
+  }, [isAuthenticated]);
   
   async function loadPosts() {
     var list = await API.get("tipline", "/posts");
     
     for (let i = 0; i < list.length; i++) {
       const image = list[i].attachment;
-      
       if (!image) continue;
-
       const file = await s3Get(image);
-
       list[i].attachment = file;
     }
-
     return list;
   }
 
   
 
   function renderPostsList(posts) {
-
     const upVote = (id, count) => {
-      
       const num = Number(count);
       console.log(id, num)
       //setVote(count);
       API.put("tipline", `/vote/${id}`, {
         body: num
       });
-      setVote(!vote);
+      //setVote(!vote);
     };
 
     return (
