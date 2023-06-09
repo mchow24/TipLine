@@ -3,9 +3,17 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { useAppContext } from "../lib/contextLib";
 import { onError } from "../lib/errorLib";
 import { API } from "aws-amplify";
-import { BsPencilSquare } from "react-icons/bs";
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import { BsPencilSquare, BsEmojiFrown, BsEmojiSmile } from "react-icons/bs";
 import { LinkContainer } from "react-router-bootstrap";
 import "./Home.css";
+import { IconButton } from "@mui/material";
 
 export default function Home() {
   const [notes, setNotes] = useState([]);
@@ -35,28 +43,64 @@ export default function Home() {
     return API.get("tipline", "/posts");
   }
 
+  
+
   function renderNotesList(notes) {
+
+    const upVote = (id, count) => {
+      console.log(id, count)
+      API.put("tipline", `/vote/${id}`, {
+        body: count
+      });
+    };
     return (
-      <>
-        <LinkContainer to="/notes/new">
-          <ListGroup.Item action className="py-3 text-nowrap text-truncate">
-            <BsPencilSquare size={17} />
-            <span className="ms-2 fw-bold">Create a new note</span>
-          </ListGroup.Item>
-        </LinkContainer>
-        {notes.map(({ noteId, content, createdAt }) => (
-          <LinkContainer key={noteId} to={`/notes/${noteId}`}>
-            <ListGroup.Item action className="text-nowrap text-truncate">
-              <span className="fw-bold">{content.trim().split("\n")[0]}</span>
-              <br />
-              <span className="text-muted">
-                Created: {new Date(createdAt).toLocaleString()}
-              </span>
-            </ListGroup.Item>
-          </LinkContainer>
-        ))}
-      </>
+    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <List dense={false}>
+    {notes.map(({ postId, content, createdAt, voteCount }) => (
+      <ListItem>
+        <ListItemText
+          primary={content}
+          secondary={new Date(createdAt).toLocaleString()}
+        />
+        <div>
+          <span>
+          <IconButton onClick={() => upVote(postId, voteCount+1)}>
+            <BsEmojiSmile />
+          </IconButton>
+          <IconButton>
+            <BsEmojiFrown />
+          </IconButton>
+          </span>
+        </div>
+      </ListItem>
+    ))}
+    </List>
+  </Box>
     );
+    // return (
+    //   <>
+    //     <LinkContainer to="/notes/new">
+    //       <ListGroup.Item action className="py-3 text-nowrap text-truncate">
+    //         <BsPencilSquare size={17} />
+    //         <span className="ms-2 fw-bold">Create a new note</span>
+    //       </ListGroup.Item>
+    //     </LinkContainer>
+    //     {notes.map(({ noteId, content, createdAt }) => (
+    //       <LinkContainer key={noteId} to={`/notes/${noteId}`}>
+    //         <ListGroup.Item action className="text-nowrap text-truncate">
+    //           <span className="fw-bold">{content.trim().split("\n")[0]}</span>
+    //           <br />
+    //           <span className="text-muted">
+    //             Created: {new Date(createdAt).toLocaleString()}
+    //           </span>
+    //           <br />
+    //           <BsEmojiSmile size={17} className="mx-2"/>
+    //           <BsEmojiFrown size={17} />
+    //         </ListGroup.Item>
+    //       </LinkContainer>
+    //     ))}
+    //   </>
+    // );
   }
 
   function renderLander() {

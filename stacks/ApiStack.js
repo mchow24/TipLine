@@ -14,7 +14,8 @@ export function ApiStack({ stack, app }) {
         },
         routes: {
             "POST /tipline": "packages/functions/src/create.main",
-            "GET /posts": "packages/functions/src/getAllPosts.main"
+            "GET /posts": "packages/functions/src/getAllPosts.main",
+            "PUT /vote/{id}": "packages/functions/src/vote.main"
         },
     });
 
