@@ -15,6 +15,22 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { s3Get } from "../lib/awsLib";
 import { Auth } from "aws-amplify";
+import Button from '@mui/joy/Button';
+import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
+import Textarea from '@mui/joy/Textarea';
+import IconButtonTwo from '@mui/joy/IconButton';
+import Menu from '@mui/joy/Menu';
+import MenuItem from '@mui/joy/MenuItem';
+import ListItemDecorator from '@mui/joy/ListItemDecorator';
+import FormatBold from '@mui/icons-material/FormatBold';
+import FormatItalic from '@mui/icons-material/FormatItalic';
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import Check from '@mui/icons-material/Check';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function Home() {
   const nav = useNavigate();
@@ -87,31 +103,31 @@ export default function Home() {
       setDel(!del);
     };
     return (
-      <Box sx={{ width: '80%', bgcolor: 'background.paper' }}>
-        {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
-          <Card sx={{ width: '700px', marginBottom: '10px' }}>
-            <div className="listItem">
-              <div>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {content}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {new Date(createdAt).toLocaleString()}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <span>
-                    <IconButton style={{
+  <Box sx={{ width: '80%', bgcolor: 'background.paper' }}>
+  {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
+  <Card sx={{ width: '700px', marginBottom: '10px'}}>
+    <div className="listItem">
+      <div>
+        <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {content}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {new Date(createdAt).toLocaleString()}
+            </Typography>
+        </CardContent>
+        <CardActions>
+            <span>
+            <IconButton style={{
                       color: isSmileActive ? 'green' : '',
                     }}
                       onClick={() => {
                         upVote(postId, voteCount + 1);
                         handleUp();
                       }}>
-                      <BsEmojiSmile />
-                    </IconButton>
-                    {voteCount}
+              <BsEmojiSmile />
+            </IconButton>
+            {voteCount}
                     <IconButton style={{
                       color: isFrownActive ? 'red' : '',
                     }}
@@ -120,20 +136,19 @@ export default function Home() {
                         handleDown();
 
                       }}>
-                      <BsEmojiFrown />
-                    </IconButton>
-                    {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
-                      <BsTrashFill />
-                    </IconButton> : null}
-                  </span>
-                </CardActions>
-              </div>
-              {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
-            </div>
-          </Card>
-        ))
-        }
-      </Box >
+              <BsEmojiFrown />
+            </IconButton>
+            {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
+              <BsTrashFill />
+            </IconButton> : null}
+            </span>
+        </CardActions>
+      </div>
+      {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
+    </div>
+  </Card>
+  ))}
+    </Box>
     );
   }
 
