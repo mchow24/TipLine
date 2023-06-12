@@ -6,5 +6,53 @@
     .Login form {
       margin: 0 auto;
       max-width: 320px;
+      display: block;
+      font-family: Marker Felt, fantasy;
     }
+
+    .login-box-light{
+      margin:auto;
+      display: flex;
+      justify-content: center;
+      height: 270px;
+      width: 35%;
+      box-shadow: 11px 12px 113px 12px rgb(207, 207, 207);
+      padding-top:30px;
+      border-radius:60px;
+      background-color: #ffffff;
+  }
+
+  .login-box-dark{
+    margin:auto;
+    display: flex;
+    justify-content: center;
+    height: 270px;
+    width: 35%;
+    box-shadow: 11px 12px 113px 12px rgb(43, 43, 43);
+    padding-top:30px;
+    border-radius:60px;
+    background-color: #414141;
+}
+
+.form-text-light{
+  color:black;
+}
+
+.form-text-dark{
+  color:white
+}
+  
+  #light{
+    color:black;
+  }
+
+  #dark{
+    color:white;
+  }
+
+  .switchStyle{
+    margin:auto;
+    justify-content: center;
+  }
+
   }

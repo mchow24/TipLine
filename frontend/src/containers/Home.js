@@ -300,14 +300,18 @@ export default function Home() {
 
     return (
       <div className="posts">
-        <span><h2 className="pb-3 mt-4 mb-3 border-bottom">Your Posts</h2>
+        <span><h2 className="mt-4 mb-3 border-bottom">
+          <div className="titleText" style={{color:theme==='dark'?'white':'black'}}>
+          Your Posts
+          </div>
+          </h2>
         <Autocomplete 
               onChange={(event, newValue) => translate(newValue.lang)}
               disablePortal
               id="combo-box-demo"
               options={languages}
               sx={{ width: 200 }}
-              renderInput={(params) => <TextField {...params} label="Languages" sx={{ m: 2 }}/>}
+              renderInput={(params) => <TextField {...params} label="Languages" sx={{ m: 2 , bgcolor:'GrayText', borderRadius:2}}/>}
             />
         </span>
         <ListGroup>{!isLoading && renderPostsList(posts)}</ListGroup>

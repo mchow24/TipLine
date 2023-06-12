@@ -1,13 +1,27 @@
-.App {
-  /* background-image: url("https://wallpaperaccess.com/full/1089679.png");
+.App-dark {
+  background-image: url("https://4kwallpapers.com/images/wallpapers/mountains-sunset-evening-sky-landscape-lake-body-of-water-5120x2880-8273.jpg");
   height: 100%;
-
-  Center and scale the image nicely
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover; */
+  background-size: cover; 
 }
 
+.App-light {
+    background-image: url("https://cdn.pixabay.com/photo/2016/05/24/16/48/mountains-1412683_1280.png");
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;  
+}
+
+
+.nav-text-dark{
+    color: white;
+}
+
+.nav-text-light{
+    color: black;
+}
 #light {
     background-color: #f3ebf6;
 }
@@ -31,6 +45,9 @@
     font-weight: "bold";
 }
 
+.nav-border {
+    border-radius: 30px;
+}
 
 .switch {
     display: flex;
@@ -43,3 +60,8 @@
 .switch label {
     margin: 10px;
 }
+
+.nav-button{
+    font-family: Marker Felt, fantasy;
+}
+

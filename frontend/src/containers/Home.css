@@ -24,3 +24,9 @@
 .imageInList {
     margin-right: 10px;
 }
+
+.titleText{
+    text-align: center;
+    font-family: Marker Felt, fantasy;
+    font-size: 45px;
+}

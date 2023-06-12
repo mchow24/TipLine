@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import LoaderButton from "../components/LoaderButton";
@@ -7,6 +7,8 @@ import { useFormFields } from "../lib/hooksLib";
 import { onError } from "../lib/errorLib";
 import "./Signup.css";
 import { Auth } from "aws-amplify";
+import ReactSwitch from "react-switch";
+import { ThemeContext} from "../App";
 
 export default function Signup() {
   const [fields, handleFieldChange] = useFormFields({
@@ -19,6 +21,8 @@ export default function Signup() {
   const [newUser, setNewUser] = useState(null);
   const { userHasAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
+  const{theme} = useContext(ThemeContext);
+  const{toggleTheme} = useContext(ThemeContext);
 
   function validateForm() {
     return (
@@ -91,6 +95,7 @@ export default function Signup() {
 
   function renderForm() {
     return (
+      <div className="signup-box">
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="email" size="lg">
           <Form.Label>Email</Form.Label>
@@ -128,12 +133,17 @@ export default function Signup() {
           Signup
         </LoaderButton>
       </Form>
+      </div>
     );
   }
 
   return (
     <div className="Signup">
       {newUser === null ? renderForm() : renderConfirmationForm()}
+      <div style={{textAlign: "center", fontFamily: "Marker Felt, fantasy", fontSize:"20px", marginTop:".5rem", color:theme==='dark'?'white':'black'}}>
+      Dark Mode&nbsp;<ReactSwitch checked={theme === "dark"} onChange={toggleTheme} />
+      </div>
     </div>
+    
   );
 }

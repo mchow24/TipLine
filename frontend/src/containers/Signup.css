@@ -6,5 +6,20 @@
     .Signup form {
       margin: 0 auto;
       max-width: 320px;
+      font-family: Marker Felt, fantasy;
+      font-size: medium;
     }
+
+    .signup-box{
+      margin:auto;
+      display: flex;
+      justify-content: center;
+      height: 325px;
+      width: 35%;
+      box-shadow: 11px 12px 113px 12px rgb(207, 207, 207);
+      padding-top:30px;
+      border-radius:60px;
+      background-color: white;
+  }
+  
   }

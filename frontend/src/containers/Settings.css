@@ -1,7 +1,25 @@
 .Settings{}
 
-.Settings h1{
-    text-align: center;
+.h1-light{
     font-family: Marker Felt, fantasy;
-    font-size: large;
+    font-size: 35px;
+    color: black;
+}
+
+.h1-dark{
+    font-family: Marker Felt, fantasy;
+    font-size: 35px;
+    color: white;
+}
+
+.text-dark{
+    font-family: Marker Felt, fantasy;
+    font-size: 20px;
+    color: black;
+}
+
+.text-light{
+    font-family: Marker Felt, fantasy;
+    font-size: 20px;
+    color: white;
 }

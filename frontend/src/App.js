@@ -16,7 +16,7 @@ import Container from "react-bootstrap/Container";
 export const ThemeContext = createContext(null);
 
 function App() {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
   const nav = useNavigate();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
@@ -58,13 +58,16 @@ function App() {
   };
 
   const brandStyle = theme === "dark" ? "brand-dark" : "brand-light";
+  const fontTheme = theme === "dark" ? "nav-text-dark" : "nav-text-light";
+  const appTheme = theme === "dark" ? "App-dark" : "App-light";
 
   return (
     !isAuthenticating && (
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <div className="App container py-3" id={theme}>
-          <Navbar collapseOnSelect bg={theme === "dark" ? "dark" : "secondary"}
-            expand="md"
+        <div className={appTheme}>
+          <Navbar collapseOnSelect bg={theme === "dark" ? "dark" : "white"}
+            fontFamily=""
+            expand="lg"
             className="nav">
             <a className="navbar-brand me-2" href="/">
               <img
@@ -75,7 +78,11 @@ function App() {
               />
             </a>
             <LinkContainer to="/">
-              <Navbar.Brand className={brandStyle}>TipLine</Navbar.Brand>
+              <Navbar.Brand className={brandStyle}>
+                <div className={fontTheme}>
+                TipLine
+                </div>
+                </Navbar.Brand>
             </LinkContainer>
 
             <Navbar.Toggle />
@@ -92,16 +99,20 @@ function App() {
                   <>
                     <LinkContainer to="/signup">
                       <div class="d-flex align-items-center">
-                        <button type="button" class="btn btn-primary">
+                        <div className="nav-button">
+                        <button type="button" class="btn btn-primary" style = {{marginRight: '.5rem'}}>
                           Sign Up Now!
                         </button>
+                        </div>
                       </div>
                     </LinkContainer>
                     <LinkContainer to="/login">
                       <div class="d-flex align-items-center">
-                        <button type="button" class="btn btn-light">
+                        <div className="nav-button">
+                        <button type="button" class="btn btn-light" style = {{marginRight: '.5rem'}}>
                           Login
                         </button>
+                        </div>
                       </div>
                     </LinkContainer>
                   </>
@@ -118,7 +129,7 @@ function App() {
               {<GrAdd size="30" />}
             </Fab>
           </LinkContainer>
-        </div>
+          </div>
       </ThemeContext.Provider>
     )
   );
