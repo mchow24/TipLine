@@ -1,12 +1,14 @@
+
+  
 .App-dark {
-    background-image: url("https://4kwallpapers.com/images/wallpapers/mountains-sunset-evening-sky-landscape-lake-body-of-water-5120x2880-8273.jpg");
+   background-image: url("https://4kwallpapers.com/images/wallpapers/mountains-sunset-evening-sky-landscape-lake-body-of-water-5120x2880-8273.jpg");
     height: 100%;
     width: 100%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     overflow: hidden;
-}
+} 
 
 .App-light {
     background-image: url("https://cdn.pixabay.com/photo/2016/05/24/16/48/mountains-1412683_1280.png");

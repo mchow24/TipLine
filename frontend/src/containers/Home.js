@@ -370,7 +370,7 @@ export default function Home() {
       <div className="posts">
         <span><h2 className="mt-4 mb-3 border-bottom">
           <div className="titleText" style={{ color: theme === 'dark' ? 'white' : 'black' }}>
-            Your Posts
+            Your Feed
           </div>
         </h2>
           <Autocomplete
