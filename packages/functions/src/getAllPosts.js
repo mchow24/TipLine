@@ -15,6 +15,12 @@ export const main = handler(async (event) => {
     throw new Error("Item not found.");
   }
 
+  var items = [...result.Items];
+
+  items.forEach(item => {
+    item.votes = JSON.parse(item.votes)
+  })
+
   // Return the retrieved item
-  return result.Items;
+  return items;
 });

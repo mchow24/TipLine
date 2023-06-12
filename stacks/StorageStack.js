@@ -18,7 +18,7 @@ export function StorageStack({ stack, app }) {
         fields: {
             userId: "string",
             postId: "string",
-            voteCount: "number",
+            votes: "string",
             comments: "string",
         },
         primaryIndex: { partitionKey: "userId", sortKey: "postId" },

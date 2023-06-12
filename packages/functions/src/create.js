@@ -14,7 +14,7 @@ export const main = handler(async (event) => {
       content: data.content, // Parsed from request body
       attachment: data.attachment, // Parsed from request body
       createdAt: Date.now(), // Current Unix timestamp
-      voteCount: 0, // Initialize vote count to 0
+      votes: `{"${event.requestContext.authorizer.iam.cognitoIdentity.identityId}": 0}`, // Initialize vote count to 0
       comments: "", // Initalize comment section
     },
   };

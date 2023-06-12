@@ -15,7 +15,6 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { s3Get } from "../lib/awsLib";
 import { Auth } from "aws-amplify";
-import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
@@ -35,8 +34,6 @@ export default function Home() {
   const [vote, setVote] = useState(true);
   const [authUserId, setUserId] = useState(null);
   const [del, setDel] = useState(true);
-  const [isSmileActive, setIsSmileActive] = useState(false);
-  const [isFrownActive, setIsFrownActive] = useState(false);
   const {theme} = useContext(ThemeContext);
 
 
@@ -46,9 +43,20 @@ export default function Home() {
         return;
       }
       try {
+        //  Get auth user id
         const auth = await Auth.currentUserInfo();
         setUserId(auth.id);
+        // Get posts
         const posts = await loadPosts();
+
+        // Loop through posts
+        posts.forEach(element => {
+          //  Get the sum of votes
+          var sum = Object.values(element.votes).reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          },0);
+          element.voteCount = sum
+        });
         setPosts(posts);
       } catch (e) {
         onError(e);
@@ -80,14 +88,6 @@ export default function Home() {
 
     };
 
-    const handleUp = () => {
-      setIsSmileActive(current => !current);
-    }
-
-    const handleDown = () => {
-      setIsFrownActive(current => !current);
-    }
-
     const authUserGet = (id) => {
       return authUserId === id;
     };
@@ -96,6 +96,58 @@ export default function Home() {
       API.del("tipline", `/posts/${id}`);
       setDel(!del);
     };
+
+  function isSmileActive(id) {
+    // Get the individual entries in the vote
+    var post = posts.find(obj => {
+      return obj.postId === id
+    })
+    const votesInPost = Object.entries(post.votes);
+    var flag = null
+    votesInPost.forEach((eachVote) => {
+      if (eachVote[0] === authUserId) {
+        if (eachVote[1] == 1) {
+          console.log("here", post);
+          flag = true;
+          return;
+        }
+        else if (eachVote[1] == 0){
+          return null;
+        }
+        else {
+          flag = false
+          return;
+        }
+      }
+    })
+    return flag
+  }
+
+  function isFrownActive(id) {
+    // Get the individual entries in the vote
+    var post = posts.find(obj => {
+      return obj.postId === id
+    })
+    const votesInPost = Object.entries(post.votes);
+    var flag = null
+    votesInPost.forEach((eachVote) => {
+      if (eachVote[0] === authUserId) {
+        if (eachVote[1] == 1) {
+          console.log("here", post);
+          flag = false;
+          return;
+        }
+        else if (eachVote[1] == 0){
+          return null;
+        }
+        else {
+          flag = true
+          return;
+        }
+      }
+    })
+    return flag
+  }
 
  return (
   <Box sx={{ width: '80%'}}>
@@ -115,11 +167,11 @@ export default function Home() {
         </CardContent>
         <CardActions>
             <span>
-            <IconButton onClick={() => upVote(postId, voteCount+1)}>
+            <IconButton onClick={() => upVote(postId, 1)} style={{color: isSmileActive(postId) ? 'green' : ''}}>
               <BsEmojiSmile />
             </IconButton>
             {voteCount}
-            <IconButton onClick={() => upVote(postId, voteCount-1)}>
+            <IconButton onClick={() => upVote(postId, -1)} style={{color: isFrownActive(postId) ? 'red' : ''}}>
               <BsEmojiFrown />
             </IconButton>
             {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
