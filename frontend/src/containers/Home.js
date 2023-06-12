@@ -15,8 +15,8 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { s3Get } from "../lib/awsLib";
 import { Auth } from "aws-amplify";
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem'
 import TextField from '@mui/material/TextField';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -56,6 +56,8 @@ export default function Home() {
             return accumulator + currentValue
           }, 0);
           element.voteCount = sum
+
+          element.comments = JSON.parse(element.comments)
         });
         setPosts(posts);
       } catch (e) {
@@ -151,17 +153,18 @@ export default function Home() {
       return flag
     }
 
-  const commentPost = (id) => {
+  const commentPost = async (id) => {
     console.log(comment, id)
-    API.put("tipline", `/post/${id}`, {
+    await API.put("tipline", `/post/${id}`, {
       body: comment
     });
+    setComment("");
     setVote(!vote);
   }
 
  return (
   <Box sx={{ width: '80%'}}>
-  {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
+  {posts.map(({ userId, postId, content, createdAt, voteCount, attachment, comments }) => (
   <Card sx={{ width: '700px', marginBottom: '10px', 
   backgroundColor: theme === "light" ? "#c7c7c7" : "#5c5b5b",
   color: theme === "light" ? "black" : "white"}} key={postId}>
@@ -201,8 +204,6 @@ export default function Home() {
           <Typography> expand to comment </Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <FormControl>
-        <FormLabel></FormLabel>
         <span>
           <TextField
             onChange={e => setComment(e.target.value)}
@@ -216,7 +217,13 @@ export default function Home() {
             < BsFillSendFill />
           </IconButton>
         </span>
-      </FormControl>
+        <List>
+            {comments ? Object.keys(comments).map((item) => (
+              <ListItem key={comments[item]}>
+                {comments[item]}
+              </ListItem>
+            )) : null}
+        </List>
         </AccordionDetails>
       </Accordion>
   </Card>
