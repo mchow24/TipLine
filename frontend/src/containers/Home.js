@@ -19,18 +19,19 @@ import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Textarea from '@mui/joy/Textarea';
-import IconButtonTwo from '@mui/joy/IconButton';
-import Menu from '@mui/joy/Menu';
-import MenuItem from '@mui/joy/MenuItem';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
-import FormatBold from '@mui/icons-material/FormatBold';
-import FormatItalic from '@mui/icons-material/FormatItalic';
-import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
-import Check from '@mui/icons-material/Check';
+// import IconButtonTwo from '@mui/joy/IconButton';
+// import Menu from '@mui/joy/Menu';
+// import MenuItem from '@mui/joy/MenuItem';
+// import ListItemDecorator from '@mui/joy/ListItemDecorator';
+// import FormatBold from '@mui/icons-material/FormatBold';
+// import FormatItalic from '@mui/icons-material/FormatItalic';
+// import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+// import Check from '@mui/icons-material/Check';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ReactSwitch from "react-switch";
 
 export default function Home() {
   const nav = useNavigate();
@@ -103,52 +104,89 @@ export default function Home() {
       setDel(!del);
     };
     return (
-  <Box sx={{ width: '80%', bgcolor: 'background.paper' }}>
-  {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
-  <Card sx={{ width: '700px', marginBottom: '10px'}}>
-    <div className="listItem">
-      <div>
-        <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {content}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {new Date(createdAt).toLocaleString()}
-            </Typography>
-        </CardContent>
-        <CardActions>
-            <span>
-            <IconButton style={{
+      <Box sx={{ width: '80%'}}>
+        {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
+          <Card sx={{ width: '700px', marginBottom: '10px', bgcolor: "#4a525e"}}>
+            <div className="listItem">
+              <div>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {content}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Date(createdAt).toLocaleString()}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  
+                    <IconButton style={{
                       color: isSmileActive ? 'green' : '',
                     }}
                       onClick={() => {
                         upVote(postId, voteCount + 1);
-                        handleUp();
+                        //handleUp();
                       }}>
-              <BsEmojiSmile />
-            </IconButton>
-            {voteCount}
+                      <BsEmojiSmile />
+                    </IconButton>
+                    {voteCount}
                     <IconButton style={{
                       color: isFrownActive ? 'red' : '',
                     }}
                       onClick={() => {
                         upVote(postId, voteCount - 1);
-                        handleDown();
+                        //handleDown();
 
                       }}>
-              <BsEmojiFrown />
-            </IconButton>
-            {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
-              <BsTrashFill />
-            </IconButton> : null}
-            </span>
-        </CardActions>
-      </div>
-      {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
-    </div>
-  </Card>
-  ))}
-    </Box>
+                      <BsEmojiFrown />
+                    </IconButton>
+                    <span>
+                    {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
+                      <BsTrashFill />
+                    </IconButton> : null}
+
+                  </span>
+                </CardActions>
+              </div>
+              {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
+            </div>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography> expand to comment </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <FormControl>
+                  <FormLabel></FormLabel>
+                  <Textarea
+                    placeholder="Comment something here…"
+                    minRows={3}
+                    endDecorator={
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          gap: 'var(--Textarea-paddingBlock)',
+                          pt: 'var(--Textarea-paddingBlock)',
+                          borderTop: '1px solid',
+                          borderColor: 'divider',
+                          flex: 'auto',
+                        }}
+                      >
+                        <Button sx={{ ml: 'auto' }}>Comment</Button>
+                      </Box>
+                    }
+                    sx={{
+                      minWidth: 300,
+                    }}
+                  />
+                </FormControl>
+              </AccordionDetails>
+            </Accordion>
+          </Card>
+        ))}
+      </Box>
     );
   }
 
@@ -164,10 +202,9 @@ export default function Home() {
   function renderPosts() {
     return (
       <div className="posts">
-        <h2 className="pb-3 mt-4 mb-3 border-bottom">
-          Your Posts
-        </h2>
+        <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Posts</h2>
         <ListGroup>{!isLoading && renderPostsList(posts)}</ListGroup>
+
       </div>
     );
   }

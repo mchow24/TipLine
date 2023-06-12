@@ -51,7 +51,7 @@ function App() {
     !isAuthenticating && (
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
         <div className="App container py-3" id={theme}>
-          <Navbar collapseOnSelect expand="md" className="nav">
+          <Navbar collapseOnSelect bg={theme === "light"? "light" : "secondary"} expand="md" className="nav">
             <a class="navbar-brand me-2" href="/">
               <img
                 src="https://cdn1.iconfinder.com/data/icons/online-shopping-filled-outline-2/64/customer_chat_bubble_cute-512.png"
