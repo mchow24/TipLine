@@ -4,7 +4,7 @@ import { useAppContext } from "../lib/contextLib";
 import { onError } from "../lib/errorLib";
 import { API } from "aws-amplify";
 import Box from '@mui/material/Box';
-import { BsEmojiFrown, BsEmojiSmile, BsTrashFill } from "react-icons/bs";
+import { BsEmojiFrown, BsEmojiSmile, BsTrashFill, BsFillSendFill } from "react-icons/bs";
 
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
@@ -34,8 +34,8 @@ export default function Home() {
   const [vote, setVote] = useState(true);
   const [authUserId, setUserId] = useState(null);
   const [del, setDel] = useState(true);
-  const { theme } = useContext(ThemeContext);
-
+  const {theme} = useContext(ThemeContext);
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     async function onLoad() {
@@ -151,65 +151,77 @@ export default function Home() {
       return flag
     }
 
-    return (
-      <Box sx={{ width: '80%' }}>
-        {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
-          <Card sx={{
-            width: '700px', marginBottom: '10px',
-            backgroundColor: theme === "light" ? "#c7c7c7" : "#5c5b5b",
-            color: theme === "light" ? "black" : "white"
-          }} key={postId}>
-            <div className="listItem">
-              <div>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {content}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {new Date(createdAt).toLocaleString()}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <span>
-                    <IconButton onClick={() => upVote(postId, 1)} style={{ color: isSmileActive(postId) ? 'green' : '' }}>
-                      <BsEmojiSmile />
-                    </IconButton>
-                    {voteCount}
-                    <IconButton onClick={() => upVote(postId, -1)} style={{ color: isFrownActive(postId) ? 'red' : '' }}>
-                      <BsEmojiFrown />
-                    </IconButton>
-                    {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
-                      <BsTrashFill />
-                    </IconButton> : null}
-                  </span>
-                </CardActions>
-              </div>
-              {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
-            </div>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography> expand to comment </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <FormControl>
-                  <FormLabel></FormLabel>
-                  <TextField
-                    placeholder="Comment something here…"
-                    minRows={3}
-                    sx={{
-                      minWidth: 300,
-                    }}
-                  />
-                </FormControl>
-              </AccordionDetails>
-            </Accordion>
-          </Card>
-        ))}
-      </Box>
+  const commentPost = (id) => {
+    console.log(comment, id)
+    API.put("tipline", `/post/${id}`, {
+      body: comment
+    });
+    setVote(!vote);
+  }
+
+ return (
+  <Box sx={{ width: '80%'}}>
+  {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
+  <Card sx={{ width: '700px', marginBottom: '10px', 
+  backgroundColor: theme === "light" ? "#c7c7c7" : "#5c5b5b",
+  color: theme === "light" ? "black" : "white"}} key={postId}>
+    <div className="listItem">
+      <div>
+        <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {content}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {new Date(createdAt).toLocaleString()}
+            </Typography>
+        </CardContent>
+        <CardActions>
+            <span>
+            <IconButton onClick={() => upVote(postId, 1)} style={{color: isSmileActive(postId) ? 'green' : ''}}>
+              <BsEmojiSmile />
+            </IconButton>
+            {voteCount}
+            <IconButton onClick={() => upVote(postId, -1)} style={{color: isFrownActive(postId) ? 'red' : ''}}>
+              <BsEmojiFrown />
+            </IconButton>
+            {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
+              <BsTrashFill />
+            </IconButton> : null}
+            </span>
+        </CardActions>
+      </div>
+      {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
+    </div>
+    <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography> expand to comment </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+        <FormControl>
+        <FormLabel></FormLabel>
+        <span>
+          <TextField
+            onChange={e => setComment(e.target.value)}
+            placeholder="Comment something here…"
+            minRows={3}
+            sx={{
+              minWidth: 300,
+            }}
+          />
+          <IconButton onClick={() => commentPost(postId) }>
+            < BsFillSendFill />
+          </IconButton>
+        </span>
+      </FormControl>
+        </AccordionDetails>
+      </Accordion>
+  </Card>
+  ))}
+    </Box>
     );
   }
 

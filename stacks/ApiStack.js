@@ -20,7 +20,8 @@ export function ApiStack({ stack, app }) {
             "PUT /vote/{id}": "packages/functions/src/vote.main",
             "DELETE /posts/{id}": "packages/functions/src/delete.main",
             "POST /translate": "packages/functions/src/translate.main",
-            "GET /getUsersPosts": "packages/functions/src/getUsersPosts.main"
+            "GET /getUsersPosts": "packages/functions/src/getUsersPosts.main",
+            "PUT /post/{id}" : "packages/functions/src/postComment.main"
         },
     });
 

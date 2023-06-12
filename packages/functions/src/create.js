@@ -15,7 +15,7 @@ export const main = handler(async (event) => {
       attachment: data.attachment, // Parsed from request body
       createdAt: Date.now(), // Current Unix timestamp
       votes: `{"${event.requestContext.authorizer.iam.cognitoIdentity.identityId}": 0}`, // Initialize vote count to 0
-      comments: "", // Initalize comment section
+      comments: "{}", // Initalize comment section
     },
   };
 
