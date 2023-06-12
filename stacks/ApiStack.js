@@ -19,7 +19,8 @@ export function ApiStack({ stack, app }) {
             "GET /posts": "packages/functions/src/getAllPosts.main",
             "PUT /vote/{id}": "packages/functions/src/vote.main",
             "DELETE /posts/{id}": "packages/functions/src/delete.main",
-            "POST /translate": "packages/functions/src/translate.main"
+            "POST /translate": "packages/functions/src/translate.main",
+            "GET /getUsersPosts": "packages/functions/src/getUsersPosts.main"
         },
     });
 
