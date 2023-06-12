@@ -5,10 +5,10 @@ import { onError } from "../lib/errorLib";
 import { API } from "aws-amplify";
 import Box from '@mui/material/Box';
 import { BsEmojiFrown, BsEmojiSmile, BsTrashFill } from "react-icons/bs";
-import { GrAdd } from "react-icons/gr";
+
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
-import { Fab, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -23,7 +23,6 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ReactSwitch from "react-switch";
 import Autocomplete from "@mui/material/Autocomplete";
 
 export default function Home() {
@@ -46,7 +45,6 @@ export default function Home() {
         const auth = await Auth.currentUserInfo();
         setUserId(auth.id);
         const posts = await loadPosts();
-        console.log("after loading posts");
         setPosts(posts);
       } catch (e) {
         onError(e);
@@ -70,10 +68,8 @@ export default function Home() {
 
   function renderPostsList(posts) {
     const upVote = (id, count) => {
-      console.log("I got called");
       setVote(!vote);
       const num = Number(count);
-      console.log(id, num)
       API.put("tipline", `/vote/${id}`, {
         body: num
       });
@@ -278,10 +274,8 @@ export default function Home() {
 
     const translate = (lang) => {
       var copyPosts = [...posts];
-      console.log("Posts Var", posts)
       const res = Promise.all(posts.map(async (element, index) => {
         if (lang == null) return;
-        console.log("here")
         const text = await API.post("tipline", `/translate`, {
           body: {
             text: element.content,
@@ -292,10 +286,8 @@ export default function Home() {
           var item = {...element};
           item.content = text;
           copyPosts[index] = item;
-          console.log(copyPosts);
         };
       })).then(() => {
-        console.log(copyPosts);
         setPosts(copyPosts);
       })
     };
@@ -320,24 +312,10 @@ export default function Home() {
 
 
 
-  const fabStyle = {
-    position: 'absolute',
-    bottom: '10%',
-    right: '10%',
-    width: '100px',
-    height: '100px'
-  };
-
-  const newPost = () => {
-    nav("/posts/new");
-  };
 
   return (
     <div className="Home">
       {isAuthenticated ? renderPosts() : renderLander()}
-      <Fab sx={fabStyle} size="large" onClick={() => newPost()}>
-        {<GrAdd size="30" />}
-      </Fab>
     </div>
   );
 }

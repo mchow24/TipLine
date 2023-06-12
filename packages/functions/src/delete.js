@@ -3,7 +3,6 @@ import handler from "@TipLine/core/handler";
 import dynamoDb from "@TipLine/core/dynamodb";
 
 export const main = handler(async (event) => {
-    console.log(event.pathParameters.id);
   const params = {
     TableName: Table.Posts.tableName,
     // 'Key' defines the partition key and sort key of the item to be removed

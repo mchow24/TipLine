@@ -67,7 +67,6 @@ export default function NewNote() {
           <Form.Control onChange={handleFileChange} type="file" />
         </Form.Group>
         <LoaderButton
-          block
           type="submit"
           size="lg"
           variant="primary"

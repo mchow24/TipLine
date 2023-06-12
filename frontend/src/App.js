@@ -9,7 +9,8 @@ import { Auth } from "aws-amplify";
 import { useNavigate } from "react-router-dom";
 import { onError } from "./lib/errorLib";
 import { createContext } from "react";
-import ReactSwitch from "react-switch";
+import { Fab } from "@mui/material";
+import { GrAdd } from "react-icons/gr";
 
 export const ThemeContext = createContext(null);
 
@@ -42,11 +43,19 @@ function App() {
 
     nav("/login");
   }
+  const fabStyle = {
+    position: 'fixed',
+    bottom: '10%',
+    right: '10%',
+    width: '100px',
+    height: '100px'
+  };
+
   return (
     !isAuthenticating && (
         <div className="App container py-3">
           <Navbar collapseOnSelect bg="secondary" expand="md" className="nav">
-            <a class="navbar-brand me-2" href="/">
+            <a className="navbar-brand me-2" href="/">
               <img
                 src="https://cdn1.iconfinder.com/data/icons/online-shopping-filled-outline-2/64/customer_chat_bubble_cute-512.png"
                 height="50"
@@ -92,6 +101,11 @@ function App() {
           <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
             <Routes />
           </AppContext.Provider>
+          <LinkContainer to="/posts/new">
+            <Fab sx={fabStyle} size="large">
+              {<GrAdd size="30" />}
+            </Fab>    
+          </LinkContainer>
         </div>
     )
   );

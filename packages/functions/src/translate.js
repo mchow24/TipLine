@@ -4,7 +4,7 @@ import handler from "@TipLine/core/handler";
 export const main = handler(async (event) => {
   const data = JSON.parse(event.body);
   const encodedParams = new URLSearchParams();
-  console.log(event.body)
+
   encodedParams.set('text', data.text);
   encodedParams.set('to', data.lang);
 
@@ -21,7 +21,7 @@ const options = {
 
 try {
 	const response = await axios.request(options);
-	console.log(response.data);
+
   return response.data.translated_text[data.lang];
 } catch (error) {
 	console.error(error);

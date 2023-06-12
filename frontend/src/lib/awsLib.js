@@ -13,7 +13,5 @@ export async function s3Upload(file) {
 export async function s3Get(filename) {
   const stored = await Storage.vault.get(filename);
 
-  console.log(stored);
-
   return stored
 }
