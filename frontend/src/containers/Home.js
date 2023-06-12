@@ -80,15 +80,14 @@ export default function Home() {
 
   function renderPostsList(posts) {
     const upVote = (id, count) => {
-      setVote(!vote);
       var num = Number(count);
-      if (isSmileActive(id) || isFrownActive(id)) {
-        num = 0
+      if (isSmileActive(id) && num == 1 || isFrownActive(id) && num == -1) {
+        num = 0;
       }
       API.put("tipline", `/vote/${id}`, {
         body: num
       });
-
+      setVote(!vote);
     };
 
     const authUserGet = (id) => {
