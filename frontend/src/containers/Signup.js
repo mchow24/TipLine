@@ -24,6 +24,9 @@ export default function Signup() {
   const{theme} = useContext(ThemeContext);
   const{toggleTheme} = useContext(ThemeContext);
 
+  const boxTheme = theme === 'dark' ? "signup-box-dark" : "signup-box-light";
+  const formTextTheme = theme === 'dark' ? 'form-text-dark' : 'form-text-light';
+
   function validateForm() {
     return (
       fields.email.length > 0 &&
@@ -95,10 +98,10 @@ export default function Signup() {
 
   function renderForm() {
     return (
-      <div className="signup-box">
+      <div className={boxTheme}>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="email" size="lg">
-          <Form.Label>Email</Form.Label>
+          <Form.Label><div className={formTextTheme}>Email</div></Form.Label>
           <Form.Control
             autoFocus
             type="email"
@@ -107,7 +110,7 @@ export default function Signup() {
           />
         </Form.Group>
         <Form.Group controlId="password" size="lg">
-          <Form.Label>Password</Form.Label>
+          <Form.Label><div className={formTextTheme}>Password</div></Form.Label>
           <Form.Control
             type="password"
             value={fields.password}
@@ -115,7 +118,7 @@ export default function Signup() {
           />
         </Form.Group>
         <Form.Group controlId="confirmPassword" size="lg">
-          <Form.Label>Confirm Password</Form.Label>
+          <Form.Label><div className={formTextTheme}>Confirm Password</div></Form.Label>
           <Form.Control
             type="password"
             onChange={handleFieldChange}

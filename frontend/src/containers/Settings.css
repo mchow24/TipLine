@@ -12,14 +12,41 @@
     color: white;
 }
 
-.text-dark{
+.text-light-1{
     font-family: Marker Felt, fantasy;
     font-size: 20px;
     color: black;
 }
 
-.text-light{
+.text-dark-1{
     font-family: Marker Felt, fantasy;
     font-size: 20px;
     color: white;
+}
+
+.setting-box-dark{
+    margin:auto;
+    margin-top: 20px;
+    margin-bottom:20px;
+    justify-content: center;
+    text-align: center;
+    height: 200px;
+    width: 35%;
+    box-shadow: 11px 12px 113px 12px rgb(62, 62, 62);
+    padding-top:30px;
+    border-radius:60px;
+    background-color: #414141;
+}
+
+.setting-box-light{
+    margin:auto;
+    margin-top: 20px;
+    margin-bottom:20px;
+    text-align: center;
+    height: 200px;
+    width: 35%;
+    box-shadow: 11px 12px 113px 12px rgb(225, 225, 225);
+    padding-top:30px;
+    border-radius:60px;
+    background-color: #fffbfb;
 }

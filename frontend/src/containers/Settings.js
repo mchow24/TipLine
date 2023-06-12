@@ -14,7 +14,8 @@ export default function Settings() {
   const { toggleTheme } = useContext(ThemeContext);
 
   const changeHeaders = theme === 'dark' ? "h1-dark" : "h1-light";
-  const changeText = theme === 'dark' ? "text-dark" : "text-light"
+  const changeText = theme === 'dark' ? "text-dark-1" : "text-light-1"
+  const boxTheme = theme === 'dark' ? "setting-box-dark" : "setting-box-light";
 
   function billUser(details) {
     return API.post("notes", "/billing", {
@@ -25,10 +26,13 @@ export default function Settings() {
   return (
 
     <div className="Settings">
+      <div className={boxTheme}>
       <div className={changeHeaders}>
         Settings
       </div>
-      Dark Mode <ReactSwitch checked={theme === "dark"} onChange={toggleTheme} />
+      <div className={changeText}>Dark Mode <ReactSwitch checked={theme === "dark"} onChange={toggleTheme} />
+      </div>
+      </div>
       
     </div>
   )

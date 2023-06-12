@@ -34,7 +34,7 @@ export default function Home() {
   const [vote, setVote] = useState(true);
   const [authUserId, setUserId] = useState(null);
   const [del, setDel] = useState(true);
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function Home() {
           //  Get the sum of votes
           var sum = Object.values(element.votes).reduce((accumulator, currentValue) => {
             return accumulator + currentValue
-          },0);
+          }, 0);
           element.voteCount = sum
         });
         setPosts(posts);
@@ -99,115 +99,117 @@ export default function Home() {
       setDel(!del);
     };
 
-  function isSmileActive(id) {
-    // Get the individual entries in the vote
-    var post = posts.find(obj => {
-      return obj.postId === id
-    })
-    const votesInPost = Object.entries(post.votes);
-    var flag = null
-    votesInPost.forEach((eachVote) => {
-      if (eachVote[0] === authUserId) {
-        if (eachVote[1] == 1) {
-          console.log("here", post);
-          flag = true;
-          return;
+    function isSmileActive(id) {
+      // Get the individual entries in the vote
+      var post = posts.find(obj => {
+        return obj.postId === id
+      })
+      const votesInPost = Object.entries(post.votes);
+      var flag = null
+      votesInPost.forEach((eachVote) => {
+        if (eachVote[0] === authUserId) {
+          if (eachVote[1] == 1) {
+            console.log("here", post);
+            flag = true;
+            return;
+          }
+          else if (eachVote[1] == 0) {
+            return null;
+          }
+          else {
+            flag = false
+            return;
+          }
         }
-        else if (eachVote[1] == 0){
-          return null;
-        }
-        else {
-          flag = false
-          return;
-        }
-      }
-    })
-    return flag
-  }
+      })
+      return flag
+    }
 
-  function isFrownActive(id) {
-    // Get the individual entries in the vote
-    var post = posts.find(obj => {
-      return obj.postId === id
-    })
-    const votesInPost = Object.entries(post.votes);
-    var flag = null
-    votesInPost.forEach((eachVote) => {
-      if (eachVote[0] === authUserId) {
-        if (eachVote[1] == 1) {
-          console.log("here", post);
-          flag = false;
-          return;
+    function isFrownActive(id) {
+      // Get the individual entries in the vote
+      var post = posts.find(obj => {
+        return obj.postId === id
+      })
+      const votesInPost = Object.entries(post.votes);
+      var flag = null
+      votesInPost.forEach((eachVote) => {
+        if (eachVote[0] === authUserId) {
+          if (eachVote[1] == 1) {
+            console.log("here", post);
+            flag = false;
+            return;
+          }
+          else if (eachVote[1] == 0) {
+            return null;
+          }
+          else {
+            flag = true
+            return;
+          }
         }
-        else if (eachVote[1] == 0){
-          return null;
-        }
-        else {
-          flag = true
-          return;
-        }
-      }
-    })
-    return flag
-  }
+      })
+      return flag
+    }
 
- return (
-  <Box sx={{ width: '80%'}}>
-  {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
-  <Card sx={{ width: '700px', marginBottom: '10px', 
-  backgroundColor: theme === "light" ? "#c7c7c7" : "#5c5b5b",
-  color: theme === "light" ? "black" : "white"}} key={postId}>
-    <div className="listItem">
-      <div>
-        <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {content}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {new Date(createdAt).toLocaleString()}
-            </Typography>
-        </CardContent>
-        <CardActions>
-            <span>
-            <IconButton onClick={() => upVote(postId, 1)} style={{color: isSmileActive(postId) ? 'green' : ''}}>
-              <BsEmojiSmile />
-            </IconButton>
-            {voteCount}
-            <IconButton onClick={() => upVote(postId, -1)} style={{color: isFrownActive(postId) ? 'red' : ''}}>
-              <BsEmojiFrown />
-            </IconButton>
-            {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
-              <BsTrashFill />
-            </IconButton> : null}
-            </span>
-        </CardActions>
-      </div>
-      {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
-    </div>
-    <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography> expand to comment </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-        <FormControl>
-        <FormLabel></FormLabel>
-        <TextField
-          placeholder="Comment something here…"
-          minRows={3}
-          sx={{
-            minWidth: 300,
-          }}
-        />
-      </FormControl>
-        </AccordionDetails>
-      </Accordion>
-  </Card>
-  ))}
-    </Box>
+    return (
+      <Box sx={{ width: '80%' }}>
+        {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
+          <Card sx={{
+            width: '700px', marginBottom: '10px',
+            backgroundColor: theme === "light" ? "#c7c7c7" : "#5c5b5b",
+            color: theme === "light" ? "black" : "white"
+          }} key={postId}>
+            <div className="listItem">
+              <div>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {content}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Date(createdAt).toLocaleString()}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <span>
+                    <IconButton onClick={() => upVote(postId, 1)} style={{ color: isSmileActive(postId) ? 'green' : '' }}>
+                      <BsEmojiSmile />
+                    </IconButton>
+                    {voteCount}
+                    <IconButton onClick={() => upVote(postId, -1)} style={{ color: isFrownActive(postId) ? 'red' : '' }}>
+                      <BsEmojiFrown />
+                    </IconButton>
+                    {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
+                      <BsTrashFill />
+                    </IconButton> : null}
+                  </span>
+                </CardActions>
+              </div>
+              {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
+            </div>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography> expand to comment </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <FormControl>
+                  <FormLabel></FormLabel>
+                  <TextField
+                    placeholder="Comment something here…"
+                    minRows={3}
+                    sx={{
+                      minWidth: 300,
+                    }}
+                  />
+                </FormControl>
+              </AccordionDetails>
+            </Accordion>
+          </Card>
+        ))}
+      </Box>
     );
   }
 
@@ -227,109 +229,109 @@ export default function Home() {
       { lang: 'am', label: 'Amharic' },
       { lang: 'ar', label: 'Arabic' },
       { lang: 'hy', label: 'Armenian' },
-      { lang: 'az', label: 'Azeerbaijani'},
-      { lang: 'ba', label: 'Bashkir'},
-      { lang: 'eu', label: 'Basque'},
-      { lang: 'be', label: 'Belarusian'},
-      { lang: 'bn', label: 'Bengali'},
-      { lang: 'bs', label: 'Bosnian'},
-      { lang: 'bg', label: 'Bulgarian'},
-      { lang: 'my', label: 'Burmese'},
-      { lang: 'ca', label: 'Catalan'},
-      { lang: 'ceb', label:'Cebuano'},
-      { lang: 'ny', label: 'Chichewa'},
-      { lang: 'co', label: 'Corsican'},
-      { lang: 'hr', label: 'Croatian'},
-      { lang: 'cs', label: 'Czech'},
-      { lang: 'da', label: 'Danish'},
-      { lang: 'nl', label: 'Dutch'},
-      { lang: 'en', label: 'English'},
-      { lang: 'eo', label: 'Esperanto'},
-      { lang: 'et', label: 'Estonian'},
-      { lang: 'fi', label: 'Finnish'},
-      { lang: 'fr', label: 'French'},
-      { lang: 'fy', label: 'Frisian'},
-      { lang: 'gl', label: 'Galician'},
-      { lang: 'ka', label: 'Georgian'},
-      { lang: 'de', label: 'German'},
-      { lang: 'el', label: 'Greek'},
-      { lang: 'gu', label: 'Gujarati'},
-      { lang: 'ht', label: 'Haitian Creole'},
-      { lang: 'ha', label: 'Hausa'},
-      { lang: 'haw', label:'Hawaiian'},
-      { lang: 'iw', label: 'Hebrew'},
-      { lang: 'mrj', label:'Hill Mari'},
-      { lang: 'hi', label: 'Hindi'},
-      { lang: 'hmn', label:'Hmong'},
-      { lang: 'hu', label: 'Hungarian'},
-      { lang: 'is', label: 'Icelandic'},
-      { lang: 'ig', label: 'Igbo'},
-      { lang: 'id', label: 'Indonesian'},
-      { lang: 'ga', label: 'Irish'},
-      { lang: 'it', label: 'Italian'},
-      { lang: 'ja', label: 'Japanese'},
-      { lang: 'jw', label: 'Javanese'},
-      { lang: 'kn', label: 'Kannada'},
-      { lang: 'kk', label: 'Kazakh'},
-      { lang: 'km', label: 'Khmer'},
-      { lang: 'ko', label: 'Korean'},
-      { lang: 'ku', label: 'Kurdish'},
-      { lang: 'ky', label: 'Kyrgyz'},
-      { lang: 'lo', label: 'Lao'},
-      { lang: 'la', label: 'Latin'},
-      { lang: 'lv', label: 'Latvian'},
-      { lang: 'lt', label: 'Lithuanian'},
-      { lang: 'lb', label: 'Luxembourgish'},
-      { lang: 'mk', label: 'Macedonian'},
-      { lang: 'mg', label: 'Malagasy'},
-      { lang: 'ms', label: 'Malay'},
-      { lang: 'ml', label: 'Malayalam'},
-      { lang: 'mt', label: 'Maltese'},
-      { lang: 'mi', label: 'Maori'},
-      { lang: 'mr', label: 'Marathi'},
-      { lang: 'mhr', label:'Mari'},
-      { lang: 'mn', label: 'Mongolian'},
-      { lang: 'ne', label: 'Nepali'},
-      { lang: 'no', label: 'Norwegian'},
-      { lang: 'ps', label: 'Pashto'},
-      { lang: 'pap', label:'Papiamento'},
-      { lang: 'fa', label: 'Persian'},
-      { lang: 'pl', label: 'Polish'},
-      { lang: 'pt', label: 'Portuguese'},
-      { lang: 'pa', label: 'Punjabi'},
-      { lang: 'ro', label: 'Romanian'},
-      { lang: 'ru', label: 'Russian'},
-      { lang: 'sm', label: 'Samoan'},
-      { lang: 'gd', label: 'Scots Gaelic'},
-      { lang: 'sr', label: 'Serbian'},
-      { lang: 'st', label: 'Sesotho'},
-      { lang: 'sn', label: 'Shona'},
-      { lang: 'sd', label: 'Sindhi'},
-      { lang: 'si', label: 'Sinhala'},
-      { lang: 'sk', label: 'Slovak'},
-      { lang: 'sl', label: 'Slovenian'},
-      { lang: 'so', label: 'Somali'},
-      { lang: 'es', label: 'Spanish'},
-      { lang: 'su', label: 'Sundanese'},
-      { lang: 'sw', label: 'Swahili'},
-      { lang: 'sv', label: 'Swedish'},
-      { lang: 'tl', label: 'Tagalog Filipino'},
-      { lang: 'tg', label: 'Tajik'},
-      { lang: 'ta', label: 'Tamil'},
-      { lang: 'tt', label: 'Tatar'},
-      { lang: 'te', label: 'Telugu'},
-      { lang: 'th', label: 'Thai'},
-      { lang: 'tr', label: 'Turkish'},
-      { lang: 'udm', label:'Udmurt'},
-      { lang: 'uk', label: 'Ukrainian'},
-      { lang: 'ur', label: 'Urdu'},
-      { lang: 'uz', label: 'Uzbek'},
-      { lang: 'vi', label: 'Vietnamese'},
-      { lang: 'cy', label: 'Welsh'},
-      { lang: 'xh', label: 'Xhosa'},
-      { lang: 'yi', label: 'Yiddish'},
-      { lang: 'yo', label: 'Yoruba'},
-      { lang: 'zu', label: 'Zulu'},
+      { lang: 'az', label: 'Azeerbaijani' },
+      { lang: 'ba', label: 'Bashkir' },
+      { lang: 'eu', label: 'Basque' },
+      { lang: 'be', label: 'Belarusian' },
+      { lang: 'bn', label: 'Bengali' },
+      { lang: 'bs', label: 'Bosnian' },
+      { lang: 'bg', label: 'Bulgarian' },
+      { lang: 'my', label: 'Burmese' },
+      { lang: 'ca', label: 'Catalan' },
+      { lang: 'ceb', label: 'Cebuano' },
+      { lang: 'ny', label: 'Chichewa' },
+      { lang: 'co', label: 'Corsican' },
+      { lang: 'hr', label: 'Croatian' },
+      { lang: 'cs', label: 'Czech' },
+      { lang: 'da', label: 'Danish' },
+      { lang: 'nl', label: 'Dutch' },
+      { lang: 'en', label: 'English' },
+      { lang: 'eo', label: 'Esperanto' },
+      { lang: 'et', label: 'Estonian' },
+      { lang: 'fi', label: 'Finnish' },
+      { lang: 'fr', label: 'French' },
+      { lang: 'fy', label: 'Frisian' },
+      { lang: 'gl', label: 'Galician' },
+      { lang: 'ka', label: 'Georgian' },
+      { lang: 'de', label: 'German' },
+      { lang: 'el', label: 'Greek' },
+      { lang: 'gu', label: 'Gujarati' },
+      { lang: 'ht', label: 'Haitian Creole' },
+      { lang: 'ha', label: 'Hausa' },
+      { lang: 'haw', label: 'Hawaiian' },
+      { lang: 'iw', label: 'Hebrew' },
+      { lang: 'mrj', label: 'Hill Mari' },
+      { lang: 'hi', label: 'Hindi' },
+      { lang: 'hmn', label: 'Hmong' },
+      { lang: 'hu', label: 'Hungarian' },
+      { lang: 'is', label: 'Icelandic' },
+      { lang: 'ig', label: 'Igbo' },
+      { lang: 'id', label: 'Indonesian' },
+      { lang: 'ga', label: 'Irish' },
+      { lang: 'it', label: 'Italian' },
+      { lang: 'ja', label: 'Japanese' },
+      { lang: 'jw', label: 'Javanese' },
+      { lang: 'kn', label: 'Kannada' },
+      { lang: 'kk', label: 'Kazakh' },
+      { lang: 'km', label: 'Khmer' },
+      { lang: 'ko', label: 'Korean' },
+      { lang: 'ku', label: 'Kurdish' },
+      { lang: 'ky', label: 'Kyrgyz' },
+      { lang: 'lo', label: 'Lao' },
+      { lang: 'la', label: 'Latin' },
+      { lang: 'lv', label: 'Latvian' },
+      { lang: 'lt', label: 'Lithuanian' },
+      { lang: 'lb', label: 'Luxembourgish' },
+      { lang: 'mk', label: 'Macedonian' },
+      { lang: 'mg', label: 'Malagasy' },
+      { lang: 'ms', label: 'Malay' },
+      { lang: 'ml', label: 'Malayalam' },
+      { lang: 'mt', label: 'Maltese' },
+      { lang: 'mi', label: 'Maori' },
+      { lang: 'mr', label: 'Marathi' },
+      { lang: 'mhr', label: 'Mari' },
+      { lang: 'mn', label: 'Mongolian' },
+      { lang: 'ne', label: 'Nepali' },
+      { lang: 'no', label: 'Norwegian' },
+      { lang: 'ps', label: 'Pashto' },
+      { lang: 'pap', label: 'Papiamento' },
+      { lang: 'fa', label: 'Persian' },
+      { lang: 'pl', label: 'Polish' },
+      { lang: 'pt', label: 'Portuguese' },
+      { lang: 'pa', label: 'Punjabi' },
+      { lang: 'ro', label: 'Romanian' },
+      { lang: 'ru', label: 'Russian' },
+      { lang: 'sm', label: 'Samoan' },
+      { lang: 'gd', label: 'Scots Gaelic' },
+      { lang: 'sr', label: 'Serbian' },
+      { lang: 'st', label: 'Sesotho' },
+      { lang: 'sn', label: 'Shona' },
+      { lang: 'sd', label: 'Sindhi' },
+      { lang: 'si', label: 'Sinhala' },
+      { lang: 'sk', label: 'Slovak' },
+      { lang: 'sl', label: 'Slovenian' },
+      { lang: 'so', label: 'Somali' },
+      { lang: 'es', label: 'Spanish' },
+      { lang: 'su', label: 'Sundanese' },
+      { lang: 'sw', label: 'Swahili' },
+      { lang: 'sv', label: 'Swedish' },
+      { lang: 'tl', label: 'Tagalog Filipino' },
+      { lang: 'tg', label: 'Tajik' },
+      { lang: 'ta', label: 'Tamil' },
+      { lang: 'tt', label: 'Tatar' },
+      { lang: 'te', label: 'Telugu' },
+      { lang: 'th', label: 'Thai' },
+      { lang: 'tr', label: 'Turkish' },
+      { lang: 'udm', label: 'Udmurt' },
+      { lang: 'uk', label: 'Ukrainian' },
+      { lang: 'ur', label: 'Urdu' },
+      { lang: 'uz', label: 'Uzbek' },
+      { lang: 'vi', label: 'Vietnamese' },
+      { lang: 'cy', label: 'Welsh' },
+      { lang: 'xh', label: 'Xhosa' },
+      { lang: 'yi', label: 'Yiddish' },
+      { lang: 'yo', label: 'Yoruba' },
+      { lang: 'zu', label: 'Zulu' },
     ]
 
     const translate = (lang) => {
@@ -343,7 +345,7 @@ export default function Home() {
           }
         });
         if (text !== "") {
-          var item = {...element};
+          var item = { ...element };
           item.content = text;
           copyPosts[index] = item;
         };
@@ -355,18 +357,18 @@ export default function Home() {
     return (
       <div className="posts">
         <span><h2 className="mt-4 mb-3 border-bottom">
-          <div className="titleText" style={{color:theme==='dark'?'white':'black'}}>
-          Your Posts
+          <div className="titleText" style={{ color: theme === 'dark' ? 'white' : 'black' }}>
+            Your Posts
           </div>
-          </h2>
-        <Autocomplete 
-              onChange={(event, newValue) => translate(newValue.lang)}
-              disablePortal
-              id="combo-box-demo"
-              options={languages}
-              sx={{ width: 200 }}
-              renderInput={(params) => <TextField {...params} label="Languages" sx={{ m: 2 , bgcolor:'GrayText', borderRadius:2}}/>}
-            />
+        </h2>
+          <Autocomplete
+            onChange={(event, newValue) => translate(newValue.lang)}
+            disablePortal
+            id="combo-box-demo"
+            options={languages}
+            sx={{ width: 200 }}
+            renderInput={(params) => <TextField {...params} label="Languages" sx={{ m: 2, bgcolor: 'GrayText', borderRadius: 2, }} />}
+          />
         </span>
         <ListGroup>{!isLoading && renderPostsList(posts)}</ListGroup>
 

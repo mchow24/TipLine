@@ -10,7 +10,7 @@
       font-size: medium;
     }
 
-    .signup-box{
+    .signup-box-light{
       margin:auto;
       display: flex;
       justify-content: center;
@@ -20,6 +20,26 @@
       padding-top:30px;
       border-radius:60px;
       background-color: white;
+  }
+
+  .signup-box-dark{
+    margin:auto;
+      display: flex;
+      justify-content: center;
+      height: 325px;
+      width: 35%;
+      box-shadow: 11px 12px 113px 12px rgb(62, 62, 62);
+      padding-top:30px;
+      border-radius:60px;
+      background-color: #414141;
+  }
+
+  .form-text-light{
+    color:black;
+  }
+  
+  .form-text-dark{
+    color:white
   }
   
   }

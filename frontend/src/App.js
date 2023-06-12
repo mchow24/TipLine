@@ -91,9 +91,9 @@ function App() {
                 {isAuthenticated ? (
                   <>
                     <LinkContainer to="/settings">
-                      <Nav.Link>Profile</Nav.Link>
+                      <Nav.Link><div style={{color:theme==='dark'?'white':'black'}}>Profile</div></Nav.Link>
                     </LinkContainer>
-                    <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                    <Nav.Link onClick={handleLogout}><div style={{color:theme==='dark'?'white':'black'}}>Logout</div></Nav.Link>
                   </>
                 ) : (
                   <>
