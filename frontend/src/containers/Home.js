@@ -47,7 +47,9 @@ export default function Home() {
         const auth = await Auth.currentUserInfo();
         setUserId(auth.id);
         // Get posts
-        const posts = await loadPosts();
+        var posts = await loadPosts();
+
+        posts = posts.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1)
 
         // Loop through posts
         posts.forEach(element => {
