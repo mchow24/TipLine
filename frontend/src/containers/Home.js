@@ -98,7 +98,7 @@ export default function Home() {
     return (
       <Box sx={{ width: '80%'}}>
         {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
-          <Card sx={{ width: '700px', marginBottom: '10px', bgcolor: "#4a525e"}}>
+          <Card sx={{ width: '700px', marginBottom: '10px', bgcolor: "#d9f7ff"}}>
             <div className="listItem">
               <div>
                 <CardContent>
@@ -152,7 +152,7 @@ export default function Home() {
               <AccordionDetails>
                 <FormControl>
                   <FormLabel></FormLabel>
-                  <Textarea
+                  <TextField
                     placeholder="Comment something here…"
                     minRows={3}
                     endDecorator={
@@ -194,7 +194,8 @@ export default function Home() {
   function renderPosts() {
     return (
       <div className="posts">
-        <h2 className="pb-3 mt-4 mb-3 border-bottom">Your Posts</h2>
+        <h2 className="pb-3 mt-4 mb-3 border-bottom">
+          Posts</h2>
         <ListGroup>{!isLoading && renderPostsList(posts)}</ListGroup>
 
       </div>

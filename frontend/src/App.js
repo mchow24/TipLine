@@ -17,11 +17,6 @@ function App() {
   const nav = useNavigate();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
-  const [theme, setTheme] = useState("light");
-
-  const toggleTheme = () => {
-    setTheme((curr) => (curr === "light" ? "dark" : "light"));
-  }
 
   useEffect(() => {
     onLoad();
@@ -49,9 +44,8 @@ function App() {
   }
   return (
     !isAuthenticating && (
-      <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <div className="App container py-3" id={theme}>
-          <Navbar collapseOnSelect bg={theme === "light"? "light" : "secondary"} expand="md" className="nav">
+        <div className="App container py-3">
+          <Navbar collapseOnSelect bg="secondary" expand="md" className="nav">
             <a class="navbar-brand me-2" href="/">
               <img
                 src="https://cdn1.iconfinder.com/data/icons/online-shopping-filled-outline-2/64/customer_chat_bubble_cute-512.png"
@@ -98,12 +92,7 @@ function App() {
           <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
             <Routes />
           </AppContext.Provider>
-          <div className="switch">
-            <label> {theme === "light" ? "Light Mode" : "Dark Mode"}</label>
-            <ReactSwitch onChange={toggleTheme} checked={theme === "dark"} />
-          </div>
         </div>
-      </ThemeContext.Provider>
     )
   );
 }

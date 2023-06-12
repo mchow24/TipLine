@@ -38,7 +38,6 @@ export default function NewNote() {
   
     try {
       const attachment = file.current ? await s3Upload(file.current) : null;
-  
       await createNote({ content, attachment });
       nav("/");
     } catch (e) { 
