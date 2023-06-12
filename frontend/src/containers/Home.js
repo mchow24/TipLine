@@ -15,18 +15,10 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { s3Get } from "../lib/awsLib";
 import { Auth } from "aws-amplify";
-import Button from '@mui/joy/Button';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Textarea from '@mui/joy/Textarea';
-import IconButtonTwo from '@mui/joy/IconButton';
-import Menu from '@mui/joy/Menu';
-import MenuItem from '@mui/joy/MenuItem';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
-import FormatBold from '@mui/icons-material/FormatBold';
-import FormatItalic from '@mui/icons-material/FormatItalic';
-import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
-import Check from '@mui/icons-material/Check';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import TextField from '@mui/material/TextField';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -93,7 +85,7 @@ export default function Home() {
     return (
   <Box sx={{ width: '80%', bgcolor: 'background.paper' }}>
   {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
-  <Card sx={{ width: '700px', marginBottom: '10px'}}>
+  <Card sx={{ width: '700px', marginBottom: '10px'}} key={postId}>
     <div className="listItem">
       <div>
         <CardContent>
@@ -132,23 +124,9 @@ export default function Home() {
         <AccordionDetails>
         <FormControl>
         <FormLabel></FormLabel>
-        <Textarea
+        <TextField
           placeholder="Comment something here…"
           minRows={3}
-          endDecorator={
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 'var(--Textarea-paddingBlock)',
-                pt: 'var(--Textarea-paddingBlock)',
-                borderTop: '1px solid',
-                borderColor: 'divider',
-                flex: 'auto',
-              }}
-            >
-              <Button sx={{ ml: 'auto' }}>Comment</Button>
-            </Box>
-          }
           sx={{
             minWidth: 300,
           }}
