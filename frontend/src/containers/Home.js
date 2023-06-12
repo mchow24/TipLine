@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import { useAppContext } from "../lib/contextLib";
 import { onError } from "../lib/errorLib";
@@ -24,6 +24,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Autocomplete from "@mui/material/Autocomplete";
+import { ThemeContext } from "../App";
+
 
 export default function Home() {
   const nav = useNavigate();
@@ -35,6 +37,8 @@ export default function Home() {
   const [del, setDel] = useState(true);
   const [isSmileActive, setIsSmileActive] = useState(false);
   const [isFrownActive, setIsFrownActive] = useState(false);
+  const {theme} = useContext(ThemeContext);
+
 
   useEffect(() => {
     async function onLoad() {
@@ -94,9 +98,11 @@ export default function Home() {
     };
 
  return (
-  <Box sx={{ width: '80%', bgcolor: 'background.paper' }}>
+  <Box sx={{ width: '80%'}}>
   {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
-  <Card sx={{ width: '700px', marginBottom: '10px'}} key={postId}>
+  <Card sx={{ width: '700px', marginBottom: '10px', 
+  backgroundColor: theme === "light" ? "#c7c7c7" : "#5c5b5b",
+  color: theme === "light" ? "black" : "white"}} key={postId}>
     <div className="listItem">
       <div>
         <CardContent>
@@ -301,7 +307,7 @@ export default function Home() {
               id="combo-box-demo"
               options={languages}
               sx={{ width: 200 }}
-              renderInput={(params) => <TextField {...params} label="Languages" />}
+              renderInput={(params) => <TextField {...params} label="Languages" sx={{ m: 2 }}/>}
             />
         </span>
         <ListGroup>{!isLoading && renderPostsList(posts)}</ListGroup>

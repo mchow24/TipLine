@@ -14,7 +14,21 @@
 
 
 #dark {
-    background-color: #46045e;
+    background-color: #a159bb;
+}
+
+.brand-light {
+    color: black;
+    font-family: Marker Felt, fantasy;
+    font-size: large;
+    font-weight: "bold";
+}
+
+.brand-dark {
+    color: white;
+    font-family: Marker Felt, fantasy;
+    font-size: large;
+    font-weight: "bold";
 }
 
 
@@ -28,12 +42,4 @@
 
 .switch label {
     margin: 10px;
-}
-
-#light .switch label {
-    color: black;
-}
-
-#dark .switch label {
-    color: white;
 }

@@ -11,13 +11,19 @@ import { onError } from "./lib/errorLib";
 import { createContext } from "react";
 import { Fab } from "@mui/material";
 import { GrAdd } from "react-icons/gr";
+import Container from "react-bootstrap/Container";
 
 export const ThemeContext = createContext(null);
 
 function App() {
+  const [theme, setTheme] = useState("light");
   const nav = useNavigate();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
   useEffect(() => {
     onLoad();
@@ -51,10 +57,15 @@ function App() {
     height: '100px'
   };
 
+  const brandStyle = theme === "dark" ? "brand-dark" : "brand-light";
+
   return (
     !isAuthenticating && (
-        <div className="App container py-3">
-          <Navbar collapseOnSelect bg="secondary" expand="md" className="nav">
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <div className="App container py-3" id={theme}>
+          <Navbar collapseOnSelect bg={theme === "dark" ? "dark" : "secondary"}
+            expand="md"
+            className="nav">
             <a className="navbar-brand me-2" href="/">
               <img
                 src="https://cdn1.iconfinder.com/data/icons/online-shopping-filled-outline-2/64/customer_chat_bubble_cute-512.png"
@@ -64,7 +75,7 @@ function App() {
               />
             </a>
             <LinkContainer to="/">
-              <Navbar.Brand className="fw-bold text-muted">Tipline</Navbar.Brand>
+              <Navbar.Brand className={brandStyle}>TipLine</Navbar.Brand>
             </LinkContainer>
 
             <Navbar.Toggle />
@@ -73,7 +84,7 @@ function App() {
                 {isAuthenticated ? (
                   <>
                     <LinkContainer to="/settings">
-                      <Nav.Link>Settings</Nav.Link>
+                      <Nav.Link>Profile</Nav.Link>
                     </LinkContainer>
                     <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                   </>
@@ -81,20 +92,21 @@ function App() {
                   <>
                     <LinkContainer to="/signup">
                       <div class="d-flex align-items-center">
-                        <button type="button" class="btn btn-outline-primary">
+                        <button type="button" class="btn btn-primary">
                           Sign Up Now!
                         </button>
                       </div>
                     </LinkContainer>
                     <LinkContainer to="/login">
                       <div class="d-flex align-items-center">
-                        <button type="button" class="btn btn-outline-secondary">
+                        <button type="button" class="btn btn-light">
                           Login
                         </button>
                       </div>
                     </LinkContainer>
                   </>
                 )}
+
               </Nav>
             </Navbar.Collapse>
           </Navbar>
@@ -104,9 +116,10 @@ function App() {
           <LinkContainer to="/posts/new">
             <Fab sx={fabStyle} size="large">
               {<GrAdd size="30" />}
-            </Fab>    
+            </Fab>
           </LinkContainer>
         </div>
+      </ThemeContext.Provider>
     )
   );
 }

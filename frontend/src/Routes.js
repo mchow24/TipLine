@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect, useContext} from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./containers/Home";
 import NotFound from "./containers/NotFound";
@@ -9,9 +9,11 @@ import Notes from "./containers/Notes";
 import Settings from "./containers/Settings";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
+import { ThemeContext } from "./App";
 
 
 export default function Links() {
+    const {theme} = useContext(ThemeContext);
   return (
     <Routes>
         <Route
