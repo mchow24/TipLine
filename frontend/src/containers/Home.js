@@ -24,6 +24,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ReactSwitch from "react-switch";
+import Autocomplete from "@mui/material/Autocomplete";
 
 export default function Home() {
   const nav = useNavigate();
@@ -88,97 +89,69 @@ export default function Home() {
     }
 
     const authUserGet = (id) => {
-      return authUserId == id;
+      return authUserId === id;
     };
 
     const deletePost = (id) => {
       API.del("tipline", `/posts/${id}`);
       setDel(!del);
     };
-    return (
-      <Box sx={{ width: '80%'}}>
-        {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
-          <Card sx={{ width: '700px', marginBottom: '10px', bgcolor: "#d9f7ff"}}>
-            <div className="listItem">
-              <div>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {content}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {new Date(createdAt).toLocaleString()}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  
-                    <IconButton style={{
-                      color: isSmileActive ? 'green' : '',
-                    }}
-                      onClick={() => {
-                        upVote(postId, voteCount + 1);
-                        //handleUp();
-                      }}>
-                      <BsEmojiSmile />
-                    </IconButton>
-                    {voteCount}
-                    <IconButton style={{
-                      color: isFrownActive ? 'red' : '',
-                    }}
-                      onClick={() => {
-                        upVote(postId, voteCount - 1);
-                        //handleDown();
 
-                      }}>
-                      <BsEmojiFrown />
-                    </IconButton>
-                    <span>
-                    {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
-                      <BsTrashFill />
-                    </IconButton> : null}
-
-                  </span>
-                </CardActions>
-              </div>
-              {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
-            </div>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography> expand to comment </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <FormControl>
-                  <FormLabel></FormLabel>
-                  <TextField
-                    placeholder="Comment something here…"
-                    minRows={3}
-                    endDecorator={
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          gap: 'var(--Textarea-paddingBlock)',
-                          pt: 'var(--Textarea-paddingBlock)',
-                          borderTop: '1px solid',
-                          borderColor: 'divider',
-                          flex: 'auto',
-                        }}
-                      >
-                        <Button sx={{ ml: 'auto' }}>Comment</Button>
-                      </Box>
-                    }
-                    sx={{
-                      minWidth: 300,
-                    }}
-                  />
-                </FormControl>
-              </AccordionDetails>
-            </Accordion>
-          </Card>
-        ))}
-      </Box>
+ return (
+  <Box sx={{ width: '80%', bgcolor: 'background.paper' }}>
+  {posts.map(({ userId, postId, content, createdAt, voteCount, attachment }) => (
+  <Card sx={{ width: '700px', marginBottom: '10px'}} key={postId}>
+    <div className="listItem">
+      <div>
+        <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {content}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {new Date(createdAt).toLocaleString()}
+            </Typography>
+        </CardContent>
+        <CardActions>
+            <span>
+            <IconButton onClick={() => upVote(postId, voteCount+1)}>
+              <BsEmojiSmile />
+            </IconButton>
+            {voteCount}
+            <IconButton onClick={() => upVote(postId, voteCount-1)}>
+              <BsEmojiFrown />
+            </IconButton>
+            {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
+              <BsTrashFill />
+            </IconButton> : null}
+            </span>
+        </CardActions>
+      </div>
+      {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
+    </div>
+    <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography> expand to comment </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+        <FormControl>
+        <FormLabel></FormLabel>
+        <TextField
+          placeholder="Comment something here…"
+          minRows={3}
+          sx={{
+            minWidth: 300,
+          }}
+        />
+      </FormControl>
+        </AccordionDetails>
+      </Accordion>
+  </Card>
+  ))}
+    </Box>
     );
   }
 
@@ -192,10 +165,153 @@ export default function Home() {
   }
 
   function renderPosts() {
+    const languages = [
+      { lang: 'af', label: 'Afrikaans' },
+      { lang: 'sq', label: 'Albanian' },
+      { lang: 'am', label: 'Amharic' },
+      { lang: 'ar', label: 'Arabic' },
+      { lang: 'hy', label: 'Armenian' },
+      { lang: 'az', label: 'Azeerbaijani'},
+      { lang: 'ba', label: 'Bashkir'},
+      { lang: 'eu', label: 'Basque'},
+      { lang: 'be', label: 'Belarusian'},
+      { lang: 'bn', label: 'Bengali'},
+      { lang: 'bs', label: 'Bosnian'},
+      { lang: 'bg', label: 'Bulgarian'},
+      { lang: 'my', label: 'Burmese'},
+      { lang: 'ca', label: 'Catalan'},
+      { lang: 'ceb', label:'Cebuano'},
+      { lang: 'ny', label: 'Chichewa'},
+      { lang: 'co', label: 'Corsican'},
+      { lang: 'hr', label: 'Croatian'},
+      { lang: 'cs', label: 'Czech'},
+      { lang: 'da', label: 'Danish'},
+      { lang: 'nl', label: 'Dutch'},
+      { lang: 'en', label: 'English'},
+      { lang: 'eo', label: 'Esperanto'},
+      { lang: 'et', label: 'Estonian'},
+      { lang: 'fi', label: 'Finnish'},
+      { lang: 'fr', label: 'French'},
+      { lang: 'fy', label: 'Frisian'},
+      { lang: 'gl', label: 'Galician'},
+      { lang: 'ka', label: 'Georgian'},
+      { lang: 'de', label: 'German'},
+      { lang: 'el', label: 'Greek'},
+      { lang: 'gu', label: 'Gujarati'},
+      { lang: 'ht', label: 'Haitian Creole'},
+      { lang: 'ha', label: 'Hausa'},
+      { lang: 'haw', label:'Hawaiian'},
+      { lang: 'iw', label: 'Hebrew'},
+      { lang: 'mrj', label:'Hill Mari'},
+      { lang: 'hi', label: 'Hindi'},
+      { lang: 'hmn', label:'Hmong'},
+      { lang: 'hu', label: 'Hungarian'},
+      { lang: 'is', label: 'Icelandic'},
+      { lang: 'ig', label: 'Igbo'},
+      { lang: 'id', label: 'Indonesian'},
+      { lang: 'ga', label: 'Irish'},
+      { lang: 'it', label: 'Italian'},
+      { lang: 'ja', label: 'Japanese'},
+      { lang: 'jw', label: 'Javanese'},
+      { lang: 'kn', label: 'Kannada'},
+      { lang: 'kk', label: 'Kazakh'},
+      { lang: 'km', label: 'Khmer'},
+      { lang: 'ko', label: 'Korean'},
+      { lang: 'ku', label: 'Kurdish'},
+      { lang: 'ky', label: 'Kyrgyz'},
+      { lang: 'lo', label: 'Lao'},
+      { lang: 'la', label: 'Latin'},
+      { lang: 'lv', label: 'Latvian'},
+      { lang: 'lt', label: 'Lithuanian'},
+      { lang: 'lb', label: 'Luxembourgish'},
+      { lang: 'mk', label: 'Macedonian'},
+      { lang: 'mg', label: 'Malagasy'},
+      { lang: 'ms', label: 'Malay'},
+      { lang: 'ml', label: 'Malayalam'},
+      { lang: 'mt', label: 'Maltese'},
+      { lang: 'mi', label: 'Maori'},
+      { lang: 'mr', label: 'Marathi'},
+      { lang: 'mhr', label:'Mari'},
+      { lang: 'mn', label: 'Mongolian'},
+      { lang: 'ne', label: 'Nepali'},
+      { lang: 'no', label: 'Norwegian'},
+      { lang: 'ps', label: 'Pashto'},
+      { lang: 'pap', label:'Papiamento'},
+      { lang: 'fa', label: 'Persian'},
+      { lang: 'pl', label: 'Polish'},
+      { lang: 'pt', label: 'Portuguese'},
+      { lang: 'pa', label: 'Punjabi'},
+      { lang: 'ro', label: 'Romanian'},
+      { lang: 'ru', label: 'Russian'},
+      { lang: 'sm', label: 'Samoan'},
+      { lang: 'gd', label: 'Scots Gaelic'},
+      { lang: 'sr', label: 'Serbian'},
+      { lang: 'st', label: 'Sesotho'},
+      { lang: 'sn', label: 'Shona'},
+      { lang: 'sd', label: 'Sindhi'},
+      { lang: 'si', label: 'Sinhala'},
+      { lang: 'sk', label: 'Slovak'},
+      { lang: 'sl', label: 'Slovenian'},
+      { lang: 'so', label: 'Somali'},
+      { lang: 'es', label: 'Spanish'},
+      { lang: 'su', label: 'Sundanese'},
+      { lang: 'sw', label: 'Swahili'},
+      { lang: 'sv', label: 'Swedish'},
+      { lang: 'tl', label: 'Tagalog Filipino'},
+      { lang: 'tg', label: 'Tajik'},
+      { lang: 'ta', label: 'Tamil'},
+      { lang: 'tt', label: 'Tatar'},
+      { lang: 'te', label: 'Telugu'},
+      { lang: 'th', label: 'Thai'},
+      { lang: 'tr', label: 'Turkish'},
+      { lang: 'udm', label:'Udmurt'},
+      { lang: 'uk', label: 'Ukrainian'},
+      { lang: 'ur', label: 'Urdu'},
+      { lang: 'uz', label: 'Uzbek'},
+      { lang: 'vi', label: 'Vietnamese'},
+      { lang: 'cy', label: 'Welsh'},
+      { lang: 'xh', label: 'Xhosa'},
+      { lang: 'yi', label: 'Yiddish'},
+      { lang: 'yo', label: 'Yoruba'},
+      { lang: 'zu', label: 'Zulu'},
+    ]
+
+    const translate = (lang) => {
+      var copyPosts = [...posts];
+      console.log("Posts Var", posts)
+      const res = Promise.all(posts.map(async (element, index) => {
+        if (lang == null) return;
+        console.log("here")
+        const text = await API.post("tipline", `/translate`, {
+          body: {
+            text: element.content,
+            lang: lang
+          }
+        });
+        if (text !== "") {
+          var item = {...element};
+          item.content = text;
+          copyPosts[index] = item;
+          console.log(copyPosts);
+        };
+      })).then(() => {
+        console.log(copyPosts);
+        setPosts(copyPosts);
+      })
+    };
+
     return (
       <div className="posts">
-        <h2 className="pb-3 mt-4 mb-3 border-bottom">
-          Posts</h2>
+        <span><h2 className="pb-3 mt-4 mb-3 border-bottom">Your Posts</h2>
+        <Autocomplete 
+              onChange={(event, newValue) => translate(newValue.lang)}
+              disablePortal
+              id="combo-box-demo"
+              options={languages}
+              sx={{ width: 200 }}
+              renderInput={(params) => <TextField {...params} label="Languages" />}
+            />
+        </span>
         <ListGroup>{!isLoading && renderPostsList(posts)}</ListGroup>
 
       </div>
