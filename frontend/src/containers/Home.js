@@ -75,14 +75,17 @@ export default function Home() {
         onError(e);
       }
     }
-    if (loading === true) {
-      setTimeout(() => {
+    const interval = setInterval(() => {
+      if (loading === true) {
+        setTimeout(() => {
+          onLoad();
+        }, 1000);
+      }
+      else {
         onLoad();
-      }, 1000);
-    }
-    else {
-      onLoad();
-    }
+      }
+    }, 4000)
+    return () => clearInterval(interval);
   }, [isAuthenticated, vote, del, loading]);
 
   async function loadPosts() {
