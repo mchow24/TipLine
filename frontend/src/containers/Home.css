@@ -12,7 +12,6 @@
     display:flex;
     flex-direction: column;
     align-items: center;
-
 }
 
 .listItem {
@@ -42,4 +41,28 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: calc(100vh - 250px);
+    padding-right: 4px;
+}
+
+.box::-webkit-scrollbar-track {
+    background-color: white;
+    box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+    border-radius: 100px;
+}
+
+.box::-webkit-scrollbar {
+    width: 10px;
+}
+
+.box::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(180deg, #d0368a 0%, #708ad4 99%);
 }
