@@ -47,7 +47,7 @@ export default function Login() {
       
       </div>
       <div style={{textAlign: "center", fontFamily: "Marker Felt, fantasy", fontSize: "30px", color: theme ==='dark' ? 'white' : 'black', marginBottom:".5rem"}}>
-      A place for you to share your thoughts anaonymously
+      A place for you to share your thoughts anonymously
       
       </div>
 
