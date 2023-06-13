@@ -243,7 +243,7 @@ export default function Home() {
         </span>
         <List>
             {comments ? Object.keys(comments).map((item) => (
-              <ListItem key={comments[item]}>
+              <ListItem key={comments[item]} class="border border-primary border-3 rounded-pill px-2 my-1">
                 {comments[item]}
               </ListItem>
             )) : null}
