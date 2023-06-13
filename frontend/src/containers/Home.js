@@ -181,11 +181,10 @@ export default function Home() {
 
  return (
   <Slide direction="up" in={posts.length > 0} unmountOnExit timeout={5000}>
-  <Box sx={{ }}>
+  <Box sx={{ width: '80%'}}>
   {posts.map(({ userId, postId, content, createdAt, voteCount, attachment, comments }) => (
   <Card sx={{ width: '700px', marginBottom: '16px', 
-  backgroundColor: theme === "light" ? "#c7c7c7" : "#5c5b5b",
-  borderRadius: "15px",
+  backgroundColor: theme === "light" ? "#c7c7c7" : "#5c5b5b", borderRadius: "15px",
   color: theme === "light" ? "black" : "white"}} key={postId} className="item">
     <div className="listItem">
       <div>
@@ -202,7 +201,6 @@ export default function Home() {
             <IconButton onClick={() => upVote(postId, 1)} style={{color: isSmileActive(postId) ? 'green' : ''}}>
               <BsEmojiSmile />
             </IconButton>
-            
             {voteCount}
             <IconButton onClick={() => upVote(postId, -1)} style={{color: isFrownActive(postId) ? 'red' : ''}}>
               <BsEmojiFrown />
@@ -414,7 +412,12 @@ export default function Home() {
           sx={{ width: 200 }}
           renderInput={(params) => <TextField {...params} label="Languages" sx={{ m: 1, bgcolor: 'GrayText', borderRadius: 2, }} />}
         />
-        <div className="box">{!loading && renderPostsList(posts)}</div>
+        <ListGroup>{!loading && renderPostsList(posts)}</ListGroup>
+        <LinkContainer to="/posts/new">
+            <Fab sx={fabStyle} size="large">
+              {<GrAdd size="30" />}
+            </Fab>
+          </LinkContainer>
       </div>
     );
   }

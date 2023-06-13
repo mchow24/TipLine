@@ -65,4 +65,5 @@
 
 .box::-webkit-scrollbar-thumb {
     background-image: linear-gradient(180deg, #d0368a 0%, #708ad4 99%);
+    border-radius: 100px;
 }
