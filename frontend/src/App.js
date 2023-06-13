@@ -3,14 +3,11 @@ import Navbar from "react-bootstrap/Navbar";
 import "./App.css";
 import Routes from "./Routes";
 import Nav from "react-bootstrap/Nav";
-import { LinkContainer } from "react-router-bootstrap";
 import { AppContext } from "./lib/contextLib";
 import { Auth } from "aws-amplify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { onError } from "./lib/errorLib";
 import { createContext } from "react";
-import { Fab } from "@mui/material";
-import { GrAdd } from "react-icons/gr";
 
 export const ThemeContext = createContext(null);
 
@@ -48,13 +45,6 @@ function App() {
 
     nav("/login");
   }
-  const fabStyle = {
-    position: 'fixed',
-    bottom: '10%',
-    right: '10%',
-    width: '100px',
-    height: '100px'
-  };
 
   const brandStyle = theme === "dark" ? "brand-dark" : "brand-light";
   const fontTheme = theme === "dark" ? "nav-text-dark" : "nav-text-light";
@@ -68,7 +58,7 @@ function App() {
             fontFamily=""
             expand="lg"
             className="nav">
-              <LinkContainer to="/">
+              <Link to="/">
               <Navbar.Brand className={brandStyle}>
                 <img
                   src="https://cdn1.iconfinder.com/data/icons/online-shopping-filled-outline-2/64/customer_chat_bubble_cute-512.png"
@@ -80,20 +70,16 @@ function App() {
                 TipLine
                 </div>
                 </Navbar.Brand>
-            </LinkContainer>
-
+            </Link>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
-              <Nav activeKey={window.location.pathname}>
                 {isAuthenticated ? (
                   <>
-                    <LinkContainer to="/settings">
-                      <Nav.Link>
+                    <Link to="/settings">
                         <div style={{color:theme==='dark'?'white':'black'}}>
                           Profile
                         </div>
-                      </Nav.Link>
-                    </LinkContainer>
+                    </Link>
                     <Nav.Link onClick={handleLogout}>
                       <div style={{color:theme==='dark'?'white':'black'}} className="logout">
                         Logout
@@ -102,7 +88,7 @@ function App() {
                   </>
                 ) : (
                   <>
-                    <LinkContainer to="/signup">
+                    <Link to="/signup">
                       <div class="d-flex align-items-center">
                         <div className="nav-button">
                         <button type="button" class="btn btn-primary" style = {{marginRight: '.5rem'}}>
@@ -110,8 +96,8 @@ function App() {
                         </button>
                         </div>
                       </div>
-                    </LinkContainer>
-                    <LinkContainer to="/login">
+                    </Link>
+                    <Link to="/login">
                       <div class="d-flex align-items-center">
                         <div className="nav-button">
                         <button type="button" class="btn btn-light" style = {{marginRight: '.5rem'}}>
@@ -119,11 +105,9 @@ function App() {
                         </button>
                         </div>
                       </div>
-                    </LinkContainer>
+                    </Link>
                   </>
                 )}
-
-              </Nav>
             </Navbar.Collapse>
           </Navbar>
           <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
