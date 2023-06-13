@@ -6,8 +6,7 @@ export function ApiStack({ stack, app }) {
 
     // Create the API
     const api = new Api(stack, "Api", {
-        customDomain:
-            app.stage === "prod" ? "pbslupp5ld.execute-api.us-east-1.amazonaws.com" : undefined,
+        customDomain: "pbslupp5ld.execute-api.us-east-1.amazonaws.com",
         defaults: {
             authorizer: "iam",
             function: {
@@ -27,7 +26,7 @@ export function ApiStack({ stack, app }) {
 
     // Show the API endpoint in the output
     stack.addOutputs({
-        ApiEndpoint: "pbslupp5ld.execute-api.us-east-1.amazonaws.com"
+        ApiEndpoint: "pbslupp5ld.execute-api.us-east-1.amazonaws.com",
       });
 
     // Return the API resource
