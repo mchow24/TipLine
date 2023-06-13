@@ -12,7 +12,7 @@ import { createContext } from "react";
 export const ThemeContext = createContext(null);
 
 function App() {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
   const nav = useNavigate();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);

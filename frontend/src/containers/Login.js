@@ -42,6 +42,15 @@ export default function Login() {
 
   return (
     <div className="Login">
+      <div style={{textAlign: "center", fontFamily: "Marker Felt, fantasy", fontSize: "40px", color: theme ==='dark' ? 'white' : 'black', marginBottom:".5rem"}}>
+      TipLine
+      
+      </div>
+      <div style={{textAlign: "center", fontFamily: "Marker Felt, fantasy", fontSize: "30px", color: theme ==='dark' ? 'white' : 'black', marginBottom:".5rem"}}>
+      A place for you to share your thoughts anaonymously
+      
+      </div>
+
       <div className={boxTheme}>
       <Form onSubmit={handleSubmit}>
         <Form.Group size="lg" controlId="email">

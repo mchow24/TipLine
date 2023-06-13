@@ -84,7 +84,8 @@ export default function Home() {
       else {
         onLoad();
       }
-    }, 4000)
+    }, 3000)
+    onLoad();
     return () => clearInterval(interval);
   }, [isAuthenticated, vote, del, loading]);
 
@@ -202,12 +203,12 @@ export default function Home() {
         </CardContent>
         <CardActions>
             <span>
-            <IconButton onClick={() => upVote(postId, 1)} style={{color: isSmileActive(postId) ? 'green' : ''}}>
+            <IconButton onClick={() => upVote(postId, 1)} style={{color: isSmileActive(postId) ? '#13f23c' : ''}}>
               <BsEmojiSmile />
             </IconButton>
             
             {voteCount}
-            <IconButton onClick={() => upVote(postId, -1)} style={{color: isFrownActive(postId) ? 'red' : ''}}>
+            <IconButton onClick={() => upVote(postId, -1)} style={{color: isFrownActive(postId) ? '#ff1741' : ''}}>
               <BsEmojiFrown />
             </IconButton>
             {authUserGet(userId) ? <IconButton onClick={() => deletePost(postId)}>
@@ -405,7 +406,7 @@ export default function Home() {
         </div>
         </Slide>
         <h2 className="mt-4 mb-3 pl-3">
-          <div className="titleText" style={{ color: theme === 'dark' ? 'white' : 'black' }}>
+          <div className="titleText" style={{ color: theme === 'dark' ? 'white' : 'black' , textShadow: "0px 0px 5px white"}}>
             Your Feed
           </div>
         </h2>
@@ -417,7 +418,7 @@ export default function Home() {
           sx={{ width: 200 }}
           renderInput={(params) => <TextField {...params} label="Languages" sx={{ m: 1, bgcolor: 'GrayText', borderRadius: 2, }} />}
         />
-        <div className="box">{!loading && renderPostsList(posts)}</div>
+        {posts.length > 0 ?  <div className="box">{!loading && renderPostsList(posts)}</div> : null}
         <LinkContainer to="/posts/new">
             <Fab sx={fabStyle} size="large">
               {<GrAdd size="30" />}
