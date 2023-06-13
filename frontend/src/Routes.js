@@ -16,6 +16,7 @@ export default function Links() {
     <Routes>
         <Route
             path="/"
+            exact
             element={
                 <AuthenticatedRoute>
                 <Home />
