@@ -23,6 +23,7 @@
 
 .nav-text-dark {
     color: white;
+    margin-left: 10px;
 }
 
 .nav-text-light {
@@ -43,6 +44,10 @@
     font-family: Marker Felt, fantasy;
     font-size: large;
     font-weight: "bold";
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 10px;
 }
 
 .brand-dark {
@@ -50,6 +55,10 @@
     font-family: Marker Felt, fantasy;
     font-size: large;
     font-weight: "bold";
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 10px;
 }
 
 .nav-border {
@@ -70,4 +79,8 @@
 
 .nav-button {
     font-family: Marker Felt, fantasy;
+}
+
+.logout {
+    margin-right: 10px;
 }

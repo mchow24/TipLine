@@ -11,7 +11,6 @@ import { onError } from "./lib/errorLib";
 import { createContext } from "react";
 import { Fab } from "@mui/material";
 import { GrAdd } from "react-icons/gr";
-import Container from "react-bootstrap/Container";
 
 export const ThemeContext = createContext(null);
 
@@ -69,16 +68,14 @@ function App() {
             fontFamily=""
             expand="lg"
             className="nav">
-            <a className="navbar-brand me-2" href="/">
-              <img
-                src="https://cdn1.iconfinder.com/data/icons/online-shopping-filled-outline-2/64/customer_chat_bubble_cute-512.png"
-                height="50"
-                alt="MDB Logo"
-                loading="lazy"
-              />
-            </a>
-            <LinkContainer to="/">
+              <LinkContainer to="/">
               <Navbar.Brand className={brandStyle}>
+                <img
+                  src="https://cdn1.iconfinder.com/data/icons/online-shopping-filled-outline-2/64/customer_chat_bubble_cute-512.png"
+                  height="50"
+                  alt="MDB Logo"
+                  loading="lazy"
+                />
                 <div className={fontTheme}>
                 TipLine
                 </div>
@@ -91,9 +88,17 @@ function App() {
                 {isAuthenticated ? (
                   <>
                     <LinkContainer to="/settings">
-                      <Nav.Link><div style={{color:theme==='dark'?'white':'black'}}>Profile</div></Nav.Link>
+                      <Nav.Link>
+                        <div style={{color:theme==='dark'?'white':'black'}}>
+                          Profile
+                        </div>
+                      </Nav.Link>
                     </LinkContainer>
-                    <Nav.Link onClick={handleLogout}><div style={{color:theme==='dark'?'white':'black'}}>Logout</div></Nav.Link>
+                    <Nav.Link onClick={handleLogout}>
+                      <div style={{color:theme==='dark'?'white':'black'}} className="logout">
+                        Logout
+                      </div>
+                    </Nav.Link>
                   </>
                 ) : (
                   <>
@@ -129,7 +134,7 @@ function App() {
               {<GrAdd size="30" />}
             </Fab>
           </LinkContainer>
-          </div>
+        </div>
       </ThemeContext.Provider>
     )
   );

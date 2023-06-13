@@ -5,8 +5,6 @@ import { onError } from "../lib/errorLib";
 import { API } from "aws-amplify";
 import Box from '@mui/material/Box';
 import { BsEmojiFrown, BsEmojiSmile, BsTrashFill, BsFillSendFill } from "react-icons/bs";
-
-import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import { IconButton } from "@mui/material";
 import Card from '@mui/material/Card';
@@ -23,19 +21,20 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Autocomplete from "@mui/material/Autocomplete";
+import Slide from "@mui/material/Slide";
 import { ThemeContext } from "../App";
+import logo from './logo.gif';
 
 
 export default function Home() {
-  const nav = useNavigate();
   const [posts, setPosts] = useState([]);
   const { isAuthenticated } = useAppContext();
-  const [isLoading, setIsLoading] = useState(true);
   const [vote, setVote] = useState(true);
   const [authUserId, setUserId] = useState(null);
   const [del, setDel] = useState(true);
   const {theme} = useContext(ThemeContext);
   const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function onLoad() {
@@ -62,13 +61,20 @@ export default function Home() {
           element.comments = JSON.parse(element.comments)
         });
         setPosts(posts);
+        setLoading(false)
       } catch (e) {
         onError(e);
       }
-      setIsLoading(false);
     }
-    onLoad();
-  }, [isAuthenticated, vote, del]);
+    if (loading === true) {
+      setTimeout(() => {
+        onLoad();
+      }, 1000);
+    }
+    else {
+      onLoad();
+    }
+  }, [isAuthenticated, vote, del, loading]);
 
   async function loadPosts() {
     var list = await API.get("tipline", "/posts");
@@ -85,7 +91,7 @@ export default function Home() {
   function renderPostsList(posts) {
     const upVote = (id, count) => {
       var num = Number(count);
-      if (isSmileActive(id) && num == 1 || isFrownActive(id) && num == -1) {
+      if ((isSmileActive(id) && num === 1) || (isFrownActive(id) && num === -1)) {
         num = 0;
       }
       API.put("tipline", `/vote/${id}`, {
@@ -112,12 +118,12 @@ export default function Home() {
       var flag = null
       votesInPost.forEach((eachVote) => {
         if (eachVote[0] === authUserId) {
-          if (eachVote[1] == 1) {
+          if (eachVote[1] === 1) {
             console.log("here", post);
             flag = true;
             return;
           }
-          else if (eachVote[1] == 0) {
+          else if (eachVote[1] === 0) {
             return null;
           }
           else {
@@ -138,12 +144,12 @@ export default function Home() {
       var flag = null
       votesInPost.forEach((eachVote) => {
         if (eachVote[0] === authUserId) {
-          if (eachVote[1] == 1) {
+          if (eachVote[1] === 1) {
             console.log("here", post);
             flag = false;
             return;
           }
-          else if (eachVote[1] == 0) {
+          else if (eachVote[1] === 0) {
             return null;
           }
           else {
@@ -165,11 +171,12 @@ export default function Home() {
   }
 
  return (
+  <Slide direction="up" in={posts.length > 0} unmountOnExit timeout={5000}>
   <Box sx={{ width: '80%'}}>
   {posts.map(({ userId, postId, content, createdAt, voteCount, attachment, comments }) => (
-  <Card sx={{ width: '700px', marginBottom: '10px', 
+  <Card sx={{ width: '700px', marginBottom: '16px', 
   backgroundColor: theme === "light" ? "#c7c7c7" : "#5c5b5b",
-  color: theme === "light" ? "black" : "white"}} key={postId}>
+  color: theme === "light" ? "black" : "white"}} key={postId} className="item">
     <div className="listItem">
       <div>
         <CardContent>
@@ -195,7 +202,7 @@ export default function Home() {
             </span>
         </CardActions>
       </div>
-      {attachment ? <img className="imageInList" alt="Post Image" height="140" src={attachment} /> : null}
+      {attachment ? <img className="imageInList" alt="Media in post" height="140" src={attachment} /> : null}
     </div>
     <Accordion>
         <AccordionSummary
@@ -231,6 +238,7 @@ export default function Home() {
   </Card>
   ))}
     </Box>
+    </Slide>
     );
   }
 
@@ -357,7 +365,7 @@ export default function Home() {
 
     const translate = (lang) => {
       var copyPosts = [...posts];
-      const res = Promise.all(posts.map(async (element, index) => {
+      Promise.all(posts.map(async (element, index) => {
         if (lang == null) return;
         const text = await API.post("tipline", `/translate`, {
           body: {
@@ -377,29 +385,28 @@ export default function Home() {
 
     return (
       <div className="posts">
-        <span><h2 className="mt-4 mb-3 border-bottom">
+        <Slide direction="up" in={loading} unmountOnExit appear={false} timeout={3000}>
+        <div className="loader">
+          <img src={logo} alt="Tipline logo"/>
+        </div>
+        </Slide>
+        <h2 className="mt-4 mb-3 pl-3">
           <div className="titleText" style={{ color: theme === 'dark' ? 'white' : 'black' }}>
             Your Feed
           </div>
         </h2>
-          <Autocomplete
-            onChange={(event, newValue) => translate(newValue.lang)}
-            disablePortal
-            id="combo-box-demo"
-            options={languages}
-            sx={{ width: 200 }}
-            renderInput={(params) => <TextField {...params} label="Languages" sx={{ m: 2, bgcolor: 'GrayText', borderRadius: 2, }} />}
-          />
-        </span>
-        <ListGroup>{!isLoading && renderPostsList(posts)}</ListGroup>
-
+        <Autocomplete
+          onChange={(event, newValue) => translate(newValue.lang)}
+          disablePortal
+          id="combo-box-demo"
+          options={languages}
+          sx={{ width: 200 }}
+          renderInput={(params) => <TextField {...params} label="Languages" sx={{ m: 1, bgcolor: 'GrayText', borderRadius: 2, }} />}
+        />
+        <ListGroup>{!loading && renderPostsList(posts)}</ListGroup>
       </div>
     );
   }
-
-
-
-
   return (
     <div className="Home">
       {isAuthenticated ? renderPosts() : renderLander()}
