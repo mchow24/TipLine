@@ -16,7 +16,12 @@
     justify-content: center;
     height: 270px;
     width: 25%;
-    box-shadow: 11px 12px 113px 12px rgb(207, 207, 207);
+    box-shadow: 0 0 .2rem #b0adad,
+    0 0 .2rem #a5a3a3,
+    0 0 2rem #b0aeb2,
+    0 0 0.8rem #848287,
+    0 0 2.8rem #b0abb3,
+    inset 0 0 1.3rem #8d888d; 
     padding-top: 30px;
     border-radius: 60px;
     background-color: #ffffff;
