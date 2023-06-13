@@ -72,8 +72,15 @@ export default function Settings() {
     onLoad();
   }, [isAuthenticated, vote, del]);
   
-  function loadPosts() {
-    return API.get("tipline", "/getUsersPosts");
+  async function loadPosts() {
+    var list = API.get("tipline", "/getUsersPosts");
+    for (let i = 0; i < list.length; i++) {
+      const image = list[i].attachment;
+      if (!image) continue;
+      const file = await s3Get(image);
+      list[i].attachment = file;
+    }
+    return list;
   }
 
   function renderUserPosts(posts){

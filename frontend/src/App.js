@@ -129,11 +129,7 @@ function App() {
           <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
             <Routes />
           </AppContext.Provider>
-          <LinkContainer to="/posts/new">
-            <Fab sx={fabStyle} size="large">
-              {<GrAdd size="30" />}
-            </Fab>
-          </LinkContainer>
+
         </div>
       </ThemeContext.Provider>
     )

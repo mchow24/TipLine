@@ -24,7 +24,9 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Slide from "@mui/material/Slide";
 import { ThemeContext } from "../App";
 import logo from './logo.gif';
-
+import { LinkContainer } from "react-router-bootstrap";
+import { Fab } from "@mui/material";
+import { GrAdd } from "react-icons/gr";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -35,6 +37,13 @@ export default function Home() {
   const {theme} = useContext(ThemeContext);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(true);
+  const fabStyle = {
+    position: 'fixed',
+    bottom: '10%',
+    right: '10%',
+    width: '100px',
+    height: '100px'
+  };
 
   useEffect(() => {
     async function onLoad() {
@@ -175,7 +184,7 @@ export default function Home() {
   <Box sx={{ width: '80%'}}>
   {posts.map(({ userId, postId, content, createdAt, voteCount, attachment, comments }) => (
   <Card sx={{ width: '700px', marginBottom: '16px', 
-  backgroundColor: theme === "light" ? "#c7c7c7" : "#5c5b5b",
+  backgroundColor: theme === "light" ? "#c7c7c7" : "#5c5b5b", borderRadius: "15px",
   color: theme === "light" ? "black" : "white"}} key={postId} className="item">
     <div className="listItem">
       <div>
@@ -404,6 +413,11 @@ export default function Home() {
           renderInput={(params) => <TextField {...params} label="Languages" sx={{ m: 1, bgcolor: 'GrayText', borderRadius: 2, }} />}
         />
         <ListGroup>{!loading && renderPostsList(posts)}</ListGroup>
+        <LinkContainer to="/posts/new">
+            <Fab sx={fabStyle} size="large">
+              {<GrAdd size="30" />}
+            </Fab>
+          </LinkContainer>
       </div>
     );
   }
